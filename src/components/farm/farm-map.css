@@ -1,0 +1,46 @@
+.farm-map {
+  height: 100%;
+  width: 100%;
+  font-family: var(--font-sans);
+}
+.farm-marker {
+  background: transparent;
+  border: 0;
+}
+.farm-marker span {
+  display: block;
+  width: 40px;
+  height: 44px;
+  border: 5px solid var(--card);
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  background: var(--info);
+}
+.farm-marker span::after {
+  content: "";
+  display: block;
+  width: 12px;
+  height: 12px;
+  background: var(--card);
+  border-radius: 50%;
+  margin: 10px auto;
+}
+.farm-map .leaflet-control-zoom a {
+  width: 44px;
+  height: 44px;
+  line-height: 44px;
+  background: var(--card);
+  color: var(--foreground);
+}
+.farm-map .leaflet-control-zoom a:focus-visible,
+.farm-map .leaflet-marker-icon:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 2px;
+}
+.farm-map .leaflet-control-attribution {
+  background: var(--card);
+  color: var(--foreground);
+}
+.farm-map .leaflet-control-attribution a {
+  color: var(--primary);
+}

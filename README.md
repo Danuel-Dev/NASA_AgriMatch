@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AgriMatch
 
-## Getting Started
+Farm planning and demo crop-rotation comparisons for the Albay pilot.
 
-First, run the development server:
+## Development
 
-```bash
+```sh
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The repository includes an npm lockfile. The existing pnpm workflow is also supported; keep dependency lockfiles synchronized when changing dependencies.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Interface architecture
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Read [DESIGN.md](./DESIGN.md) before changing the interface.
 
-## Learn More
+The approved [redesign plan](./UI-REDESIGN-PLAN.md) uses a compact 1200px workspace: location and map beside a 400px setup column on desktop, with a location-first flow and reachable comparison action on phones. Location selection combines equal-width shadcn results and search controls; search runs explicitly through Enter or its icon action. Comparison summaries disclose farm details and an optional map so rotation options stay near the top.
 
-To learn more about Next.js, take a look at the following resources:
+- `src/app/`: Next.js route entry points, the shared root layout, loading, error, and not-found boundaries.
+- `src/components/ui/`: official shadcn/ui components generated with the Base UI-backed Nova registry; shared sizes, semantic variants, and focus treatments live here.
+- `src/components/farm/`: farm form, location search, map adapter, and the farm-state provider.
+- `src/components/analysis/`: comparison, farm snapshot, and rotation-detail compositions.
+- `src/lib/`: shared farm types, validation, location-response parsing, and the demo rotation dataset.
+- `public/farm-landscape.svg`: the original landscape illustration extracted from the former CSS drawing.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The root layout owns one shared page shell. Route files select and compose views. Rotation IDs resolve against the shared dataset; unknown IDs use the rotation not-found boundary. Farm inputs live in a root React provider and survive client navigation; a full reload starts a fresh draft.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Use imported shadcn controls and shared `buttonVariants` for navigation links. Keep content in open semantic sections; avoid decorative cards and nested containers. Leaflet owns only specialist map rendering and built-in map controls.
 
-## Deploy on Vercel
+## Validation
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```sh
+npm run lint
+npm run build
+npx playwright install chromium
+npm run test:e2e
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Browser tests run the production build on port 3100, cover desktop and mobile, and include accessibility checks with axe. They mock the existing external search and map services for deterministic workflow checks. On Windows, an installed Edge can be used with `$env:PLAYWRIGHT_CHANNEL='msedge'` before running the browser tests.
+
+## Data and external services
+
+Climate and soil datasets are not connected. All three rotation scores and explanations are fixed demo values; the UI labels them accordingly. Farm summaries use the user's actual selections.
+
+Location search retains the existing [Nominatim service](https://operations.osmfoundation.org/policies/nominatim/) and runs only after an explicit search action. Its public service prohibits keystroke autocomplete, limits combined application traffic to one request per second, and requires attribution and an identifiable Referer. Production deployment needs an appropriately configured provider/proxy, caching, and application-wide rate limiting; this interface migration does not add that infrastructure. Map tiles retain OpenStreetMap attribution. Coordinate entry remains available when external services fail.

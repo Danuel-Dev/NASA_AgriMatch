@@ -1,0 +1,658 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-14T17:11:04.526567Z",
+  "title": "Design System: AgriMatch",
+  "extensions": {
+    "colorMeta": {
+      "background": {
+        "role": "neutral",
+        "displayName": "Cream canvas",
+        "tonalRamp": [
+          "oklch(15.00% 0.00947 119.58)",
+          "oklch(26.43% 0.00947 119.58)",
+          "oklch(37.86% 0.00947 119.58)",
+          "oklch(49.29% 0.00947 119.58)",
+          "oklch(60.71% 0.00947 119.58)",
+          "oklch(72.14% 0.00947 119.58)",
+          "oklch(83.57% 0.00947 119.58)",
+          "oklch(95.00% 0.00947 119.58)"
+        ]
+      },
+      "foreground": {
+        "role": "neutral",
+        "displayName": "Forest text",
+        "tonalRamp": [
+          "oklch(15.00% 0.04074 169.57)",
+          "oklch(26.43% 0.04074 169.57)",
+          "oklch(37.86% 0.04074 169.57)",
+          "oklch(49.29% 0.04074 169.57)",
+          "oklch(60.71% 0.04074 169.57)",
+          "oklch(72.14% 0.04074 169.57)",
+          "oklch(83.57% 0.04074 169.57)",
+          "oklch(95.00% 0.04074 169.57)"
+        ]
+      },
+      "card": {
+        "role": "neutral",
+        "displayName": "White working surface",
+        "tonalRamp": [
+          "oklch(15.00% 0.00000 0.00)",
+          "oklch(26.43% 0.00000 0.00)",
+          "oklch(37.86% 0.00000 0.00)",
+          "oklch(49.29% 0.00000 0.00)",
+          "oklch(60.71% 0.00000 0.00)",
+          "oklch(72.14% 0.00000 0.00)",
+          "oklch(83.57% 0.00000 0.00)",
+          "oklch(95.00% 0.00000 0.00)"
+        ]
+      },
+      "card-foreground": {
+        "role": "neutral",
+        "displayName": "Forest surface text",
+        "tonalRamp": [
+          "oklch(15.00% 0.04074 169.57)",
+          "oklch(26.43% 0.04074 169.57)",
+          "oklch(37.86% 0.04074 169.57)",
+          "oklch(49.29% 0.04074 169.57)",
+          "oklch(60.71% 0.04074 169.57)",
+          "oklch(72.14% 0.04074 169.57)",
+          "oklch(83.57% 0.04074 169.57)",
+          "oklch(95.00% 0.04074 169.57)"
+        ]
+      },
+      "popover": {
+        "role": "neutral",
+        "displayName": "White floating surface",
+        "tonalRamp": [
+          "oklch(15.00% 0.00000 0.00)",
+          "oklch(26.43% 0.00000 0.00)",
+          "oklch(37.86% 0.00000 0.00)",
+          "oklch(49.29% 0.00000 0.00)",
+          "oklch(60.71% 0.00000 0.00)",
+          "oklch(72.14% 0.00000 0.00)",
+          "oklch(83.57% 0.00000 0.00)",
+          "oklch(95.00% 0.00000 0.00)"
+        ]
+      },
+      "popover-foreground": {
+        "role": "neutral",
+        "displayName": "Forest popup text",
+        "tonalRamp": [
+          "oklch(15.00% 0.04074 169.57)",
+          "oklch(26.43% 0.04074 169.57)",
+          "oklch(37.86% 0.04074 169.57)",
+          "oklch(49.29% 0.04074 169.57)",
+          "oklch(60.71% 0.04074 169.57)",
+          "oklch(72.14% 0.04074 169.57)",
+          "oklch(83.57% 0.04074 169.57)",
+          "oklch(95.00% 0.04074 169.57)"
+        ]
+      },
+      "primary": {
+        "role": "primary",
+        "displayName": "Forest green action",
+        "tonalRamp": [
+          "oklch(15.00% 0.08526 158.14)",
+          "oklch(26.43% 0.08526 158.14)",
+          "oklch(37.86% 0.08526 158.14)",
+          "oklch(49.29% 0.08526 158.14)",
+          "oklch(60.71% 0.08526 158.14)",
+          "oklch(72.14% 0.08526 158.14)",
+          "oklch(83.57% 0.08526 158.14)",
+          "oklch(95.00% 0.08526 158.14)"
+        ]
+      },
+      "primary-foreground": {
+        "role": "primary",
+        "displayName": "White action label",
+        "tonalRamp": [
+          "oklch(15.00% 0.00000 0.00)",
+          "oklch(26.43% 0.00000 0.00)",
+          "oklch(37.86% 0.00000 0.00)",
+          "oklch(49.29% 0.00000 0.00)",
+          "oklch(60.71% 0.00000 0.00)",
+          "oklch(72.14% 0.00000 0.00)",
+          "oklch(83.57% 0.00000 0.00)",
+          "oklch(95.00% 0.00000 0.00)"
+        ]
+      },
+      "secondary": {
+        "role": "secondary",
+        "displayName": "Soft sage support",
+        "tonalRamp": [
+          "oklch(15.00% 0.01871 130.18)",
+          "oklch(26.43% 0.01871 130.18)",
+          "oklch(37.86% 0.01871 130.18)",
+          "oklch(49.29% 0.01871 130.18)",
+          "oklch(60.71% 0.01871 130.18)",
+          "oklch(72.14% 0.01871 130.18)",
+          "oklch(83.57% 0.01871 130.18)",
+          "oklch(95.00% 0.01871 130.18)"
+        ]
+      },
+      "secondary-foreground": {
+        "role": "secondary",
+        "displayName": "Forest support text",
+        "tonalRamp": [
+          "oklch(15.00% 0.04074 169.57)",
+          "oklch(26.43% 0.04074 169.57)",
+          "oklch(37.86% 0.04074 169.57)",
+          "oklch(49.29% 0.04074 169.57)",
+          "oklch(60.71% 0.04074 169.57)",
+          "oklch(72.14% 0.04074 169.57)",
+          "oklch(83.57% 0.04074 169.57)",
+          "oklch(95.00% 0.04074 169.57)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Quiet pale surface",
+        "tonalRamp": [
+          "oklch(15.00% 0.00690 124.45)",
+          "oklch(26.43% 0.00690 124.45)",
+          "oklch(37.86% 0.00690 124.45)",
+          "oklch(49.29% 0.00690 124.45)",
+          "oklch(60.71% 0.00690 124.45)",
+          "oklch(72.14% 0.00690 124.45)",
+          "oklch(83.57% 0.00690 124.45)",
+          "oklch(95.00% 0.00690 124.45)"
+        ]
+      },
+      "muted-foreground": {
+        "role": "neutral",
+        "displayName": "Supporting green text",
+        "tonalRamp": [
+          "oklch(15.00% 0.06637 151.95)",
+          "oklch(26.43% 0.06637 151.95)",
+          "oklch(37.86% 0.06637 151.95)",
+          "oklch(49.29% 0.06637 151.95)",
+          "oklch(60.71% 0.06637 151.95)",
+          "oklch(72.14% 0.06637 151.95)",
+          "oklch(83.57% 0.06637 151.95)",
+          "oklch(95.00% 0.06637 151.95)"
+        ]
+      },
+      "accent": {
+        "role": "secondary",
+        "displayName": "Sage interaction wash",
+        "tonalRamp": [
+          "oklch(15.00% 0.01967 135.83)",
+          "oklch(26.43% 0.01967 135.83)",
+          "oklch(37.86% 0.01967 135.83)",
+          "oklch(49.29% 0.01967 135.83)",
+          "oklch(60.71% 0.01967 135.83)",
+          "oklch(72.14% 0.01967 135.83)",
+          "oklch(83.57% 0.01967 135.83)",
+          "oklch(95.00% 0.01967 135.83)"
+        ]
+      },
+      "accent-foreground": {
+        "role": "secondary",
+        "displayName": "Forest interaction text",
+        "tonalRamp": [
+          "oklch(15.00% 0.08526 158.14)",
+          "oklch(26.43% 0.08526 158.14)",
+          "oklch(37.86% 0.08526 158.14)",
+          "oklch(49.29% 0.08526 158.14)",
+          "oklch(60.71% 0.08526 158.14)",
+          "oklch(72.14% 0.08526 158.14)",
+          "oklch(83.57% 0.08526 158.14)",
+          "oklch(95.00% 0.08526 158.14)"
+        ]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Pale green divider",
+        "tonalRamp": [
+          "oklch(15.00% 0.01873 137.80)",
+          "oklch(26.43% 0.01873 137.80)",
+          "oklch(37.86% 0.01873 137.80)",
+          "oklch(49.29% 0.01873 137.80)",
+          "oklch(60.71% 0.01873 137.80)",
+          "oklch(72.14% 0.01873 137.80)",
+          "oklch(83.57% 0.01873 137.80)",
+          "oklch(95.00% 0.01873 137.80)"
+        ]
+      },
+      "input": {
+        "role": "neutral",
+        "displayName": "Gray-green control boundary",
+        "tonalRamp": [
+          "oklch(15.00% 0.02695 158.62)",
+          "oklch(26.43% 0.02695 158.62)",
+          "oklch(37.86% 0.02695 158.62)",
+          "oklch(49.29% 0.02695 158.62)",
+          "oklch(60.71% 0.02695 158.62)",
+          "oklch(72.14% 0.02695 158.62)",
+          "oklch(83.57% 0.02695 158.62)",
+          "oklch(95.00% 0.02695 158.62)"
+        ]
+      },
+      "ring": {
+        "role": "primary",
+        "displayName": "Forest focus indicator",
+        "tonalRamp": [
+          "oklch(15.00% 0.08526 158.14)",
+          "oklch(26.43% 0.08526 158.14)",
+          "oklch(37.86% 0.08526 158.14)",
+          "oklch(49.29% 0.08526 158.14)",
+          "oklch(60.71% 0.08526 158.14)",
+          "oklch(72.14% 0.08526 158.14)",
+          "oklch(83.57% 0.08526 158.14)",
+          "oklch(95.00% 0.08526 158.14)"
+        ]
+      },
+      "destructive": {
+        "role": "tertiary",
+        "displayName": "Earth-red error",
+        "tonalRamp": [
+          "oklch(15.00% 0.06241 31.81)",
+          "oklch(26.43% 0.06241 31.81)",
+          "oklch(37.86% 0.06241 31.81)",
+          "oklch(49.29% 0.06241 31.81)",
+          "oklch(60.71% 0.06241 31.81)",
+          "oklch(72.14% 0.06241 31.81)",
+          "oklch(83.57% 0.06241 31.81)",
+          "oklch(95.00% 0.06241 31.81)"
+        ]
+      },
+      "destructive-foreground": {
+        "role": "tertiary",
+        "displayName": "White error label",
+        "tonalRamp": [
+          "oklch(15.00% 0.00000 0.00)",
+          "oklch(26.43% 0.00000 0.00)",
+          "oklch(37.86% 0.00000 0.00)",
+          "oklch(49.29% 0.00000 0.00)",
+          "oklch(60.71% 0.00000 0.00)",
+          "oklch(72.14% 0.00000 0.00)",
+          "oklch(83.57% 0.00000 0.00)",
+          "oklch(95.00% 0.00000 0.00)"
+        ]
+      },
+      "success": {
+        "role": "tertiary",
+        "displayName": "Supporting green confirmation",
+        "tonalRamp": [
+          "oklch(15.00% 0.06637 151.95)",
+          "oklch(26.43% 0.06637 151.95)",
+          "oklch(37.86% 0.06637 151.95)",
+          "oklch(49.29% 0.06637 151.95)",
+          "oklch(60.71% 0.06637 151.95)",
+          "oklch(72.14% 0.06637 151.95)",
+          "oklch(83.57% 0.06637 151.95)",
+          "oklch(95.00% 0.06637 151.95)"
+        ]
+      },
+      "success-surface": {
+        "role": "tertiary",
+        "displayName": "Pale confirmation wash",
+        "tonalRamp": [
+          "oklch(15.00% 0.01749 131.87)",
+          "oklch(26.43% 0.01749 131.87)",
+          "oklch(37.86% 0.01749 131.87)",
+          "oklch(49.29% 0.01749 131.87)",
+          "oklch(60.71% 0.01749 131.87)",
+          "oklch(72.14% 0.01749 131.87)",
+          "oklch(83.57% 0.01749 131.87)",
+          "oklch(95.00% 0.01749 131.87)"
+        ]
+      },
+      "warning": {
+        "role": "tertiary",
+        "displayName": "Amber accent",
+        "tonalRamp": [
+          "oklch(15.00% 0.08398 80.04)",
+          "oklch(26.43% 0.08398 80.04)",
+          "oklch(37.86% 0.08398 80.04)",
+          "oklch(49.29% 0.08398 80.04)",
+          "oklch(60.71% 0.08398 80.04)",
+          "oklch(72.14% 0.08398 80.04)",
+          "oklch(83.57% 0.08398 80.04)",
+          "oklch(95.00% 0.08398 80.04)"
+        ]
+      },
+      "warning-surface": {
+        "role": "tertiary",
+        "displayName": "Pale amber notice",
+        "tonalRamp": [
+          "oklch(15.00% 0.03442 88.77)",
+          "oklch(26.43% 0.03442 88.77)",
+          "oklch(37.86% 0.03442 88.77)",
+          "oklch(49.29% 0.03442 88.77)",
+          "oklch(60.71% 0.03442 88.77)",
+          "oklch(72.14% 0.03442 88.77)",
+          "oklch(83.57% 0.03442 88.77)",
+          "oklch(95.00% 0.03442 88.77)"
+        ]
+      },
+      "warning-foreground": {
+        "role": "tertiary",
+        "displayName": "Forest notice text",
+        "tonalRamp": [
+          "oklch(15.00% 0.04074 169.57)",
+          "oklch(26.43% 0.04074 169.57)",
+          "oklch(37.86% 0.04074 169.57)",
+          "oklch(49.29% 0.04074 169.57)",
+          "oklch(60.71% 0.04074 169.57)",
+          "oklch(72.14% 0.04074 169.57)",
+          "oklch(83.57% 0.04074 169.57)",
+          "oklch(95.00% 0.04074 169.57)"
+        ]
+      },
+      "explanation-surface": {
+        "role": "tertiary",
+        "displayName": "Pale earth-red explanation",
+        "tonalRamp": [
+          "oklch(15.00% 0.01678 31.08)",
+          "oklch(26.43% 0.01678 31.08)",
+          "oklch(37.86% 0.01678 31.08)",
+          "oklch(49.29% 0.01678 31.08)",
+          "oklch(60.71% 0.01678 31.08)",
+          "oklch(72.14% 0.01678 31.08)",
+          "oklch(83.57% 0.01678 31.08)",
+          "oklch(95.00% 0.01678 31.08)"
+        ]
+      },
+      "explanation-foreground": {
+        "role": "tertiary",
+        "displayName": "Earth-red explanation text",
+        "tonalRamp": [
+          "oklch(15.00% 0.06241 31.81)",
+          "oklch(26.43% 0.06241 31.81)",
+          "oklch(37.86% 0.06241 31.81)",
+          "oklch(49.29% 0.06241 31.81)",
+          "oklch(60.71% 0.06241 31.81)",
+          "oklch(72.14% 0.06241 31.81)",
+          "oklch(83.57% 0.06241 31.81)",
+          "oklch(95.00% 0.06241 31.81)"
+        ]
+      },
+      "info": {
+        "role": "tertiary",
+        "displayName": "Teal location accent",
+        "tonalRamp": [
+          "oklch(15.00% 0.06254 211.75)",
+          "oklch(26.43% 0.06254 211.75)",
+          "oklch(37.86% 0.06254 211.75)",
+          "oklch(49.29% 0.06254 211.75)",
+          "oklch(60.71% 0.06254 211.75)",
+          "oklch(72.14% 0.06254 211.75)",
+          "oklch(83.57% 0.06254 211.75)",
+          "oklch(95.00% 0.06254 211.75)"
+        ]
+      },
+      "chart-1": {
+        "role": "tertiary",
+        "displayName": "Blue rotation identifier",
+        "tonalRamp": [
+          "oklch(15.00% 0.18598 263.01)",
+          "oklch(26.43% 0.18598 263.01)",
+          "oklch(37.86% 0.18598 263.01)",
+          "oklch(49.29% 0.18598 263.01)",
+          "oklch(60.71% 0.18598 263.01)",
+          "oklch(72.14% 0.18598 263.01)",
+          "oklch(83.57% 0.18598 263.01)",
+          "oklch(95.00% 0.18598 263.01)"
+        ]
+      },
+      "chart-2": {
+        "role": "tertiary",
+        "displayName": "Green rotation identifier",
+        "tonalRamp": [
+          "oklch(15.00% 0.06180 172.16)",
+          "oklch(26.43% 0.06180 172.16)",
+          "oklch(37.86% 0.06180 172.16)",
+          "oklch(49.29% 0.06180 172.16)",
+          "oklch(60.71% 0.06180 172.16)",
+          "oklch(72.14% 0.06180 172.16)",
+          "oklch(83.57% 0.06180 172.16)",
+          "oklch(95.00% 0.06180 172.16)"
+        ]
+      },
+      "chart-3": {
+        "role": "tertiary",
+        "displayName": "Pink rotation identifier",
+        "tonalRamp": [
+          "oklch(15.00% 0.18240 354.19)",
+          "oklch(26.43% 0.18240 354.19)",
+          "oklch(37.86% 0.18240 354.19)",
+          "oklch(49.29% 0.18240 354.19)",
+          "oklch(60.71% 0.18240 354.19)",
+          "oklch(72.14% 0.18240 354.19)",
+          "oklch(83.57% 0.18240 354.19)",
+          "oklch(95.00% 0.18240 354.19)"
+        ]
+      },
+      "brand-mark": {
+        "role": "primary",
+        "displayName": "Leaf-green brand symbol",
+        "tonalRamp": [
+          "oklch(15.00% 0.12669 125.68)",
+          "oklch(26.43% 0.12669 125.68)",
+          "oklch(37.86% 0.12669 125.68)",
+          "oklch(49.29% 0.12669 125.68)",
+          "oklch(60.71% 0.12669 125.68)",
+          "oklch(72.14% 0.12669 125.68)",
+          "oklch(83.57% 0.12669 125.68)",
+          "oklch(95.00% 0.12669 125.68)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "brand": {
+        "displayName": "Brand",
+        "purpose": "Compact brand/home navigation in the shared shell."
+      },
+      "display": {
+        "displayName": "Restrained display",
+        "purpose": "Reserved introduction tier; working routes use the headline role."
+      },
+      "headline": {
+        "displayName": "Page heading",
+        "purpose": "One semantic h1 per route at the shared product scale."
+      },
+      "title": {
+        "displayName": "Section heading",
+        "purpose": "Major sections of the workspace, comparison, and detail."
+      },
+      "body": {
+        "displayName": "Body and entry",
+        "purpose": "Instructions, prose, and editable control values."
+      },
+      "label": {
+        "displayName": "Field label",
+        "purpose": "Persistent 500-weight field labels; emphasized legends use 600."
+      },
+      "action": {
+        "displayName": "Action and badge",
+        "purpose": "Standard 600-weight button and Badge labels; the large comparison action uses 16px."
+      },
+      "mono": {
+        "displayName": "Coordinates",
+        "purpose": "Farm coordinates and comparable numeric metadata, with tabular numerals where appropriate."
+      }
+    },
+    "shadows": [
+      {
+        "name": "popup-md",
+        "value": "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+        "purpose": "Installed Select and Combobox popup elevation; ordinary workspace sections and Cards stay flat."
+      },
+      {
+        "name": "popup-edge",
+        "value": "0 0 0 1px color-mix(in oklab, var(--foreground) 10%, transparent)",
+        "purpose": "Shared popup edge ring; distinguish from the keyboard focus indicator."
+      },
+      {
+        "name": "focus-ring",
+        "value": "0 0 0 3px var(--ring)",
+        "purpose": "Shared keyboard focus indicator; InputGroup uses the same ring at 50% color strength."
+      }
+    ],
+    "motion": [
+      {
+        "name": "control-color",
+        "value": "150ms",
+        "purpose": "Shared input/button/Badge state transitions; disabled for reduced motion."
+      },
+      {
+        "name": "select-entrance",
+        "value": "150ms",
+        "purpose": "Installed Select popup entrance/exit; animations disabled for reduced motion."
+      },
+      {
+        "name": "combobox-entrance",
+        "value": "100ms",
+        "purpose": "Installed Combobox popup entrance/exit; animations disabled for reduced motion."
+      },
+      {
+        "name": "map-refinement",
+        "value": "200ms",
+        "purpose": "Leaflet flyTo after a valid selection; reduced motion uses immediate setView."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "xl",
+        "value": "1280px"
+      },
+      {
+        "name": "location-search-container",
+        "value": "24rem"
+      },
+      {
+        "name": "field-group-container",
+        "value": "24rem"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary action",
+      "kind": "button",
+      "description": "Development-only visual preview of the imported shared Button/buttonVariants treatment; application code must use the official source.",
+      "html": "<button type=\"button\" class=\"ds-button-primary\"><svg aria-hidden=\"true\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m9 18 6-6-6-6\"/></svg>Compare demo rotations</button>",
+      "css": ".ds-button-primary{font-family:var(--font-geist-sans, sans-serif);display:inline-flex;max-width:100%;min-height:48px;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border:1px solid transparent;border-radius:var(--radius);font-size:14px;font-weight:600;line-height:20px;text-align:center;white-space:normal;text-decoration:none;cursor:pointer;transition:background-color 150ms,color 150ms;background:var(--primary);color:var(--primary-foreground);}.ds-button-primary:hover{background:color-mix(in oklab,var(--primary) 90%,transparent);}.ds-button-primary:focus-visible{outline:3px solid var(--ring);outline-offset:2px;}.ds-button-primary:active{filter:brightness(.98)}.ds-button-primary:disabled{pointer-events:none;opacity:.5}@media(prefers-reduced-motion:reduce){.ds-button-primary{transition:none}}",
+      "refersTo": "button-primary"
+    },
+    {
+      "name": "Outline action",
+      "kind": "button",
+      "description": "Development-only visual preview of the imported shared Button/buttonVariants treatment; application code must use the official source.",
+      "html": "<button type=\"button\" class=\"ds-button-outline\"><svg aria-hidden=\"true\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m12 19-7-7 7-7M5 12h14\"/></svg>Edit your farm</button>",
+      "css": ".ds-button-outline{font-family:var(--font-geist-sans, sans-serif);display:inline-flex;max-width:100%;min-height:48px;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border:1px solid transparent;border-radius:var(--radius);font-size:14px;font-weight:600;line-height:20px;text-align:center;white-space:normal;text-decoration:none;cursor:pointer;transition:background-color 150ms,color 150ms;background:var(--card);color:var(--foreground);border-color:var(--input);}.ds-button-outline:hover{background:var(--accent);color:var(--accent-foreground);}.ds-button-outline:focus-visible{outline:3px solid var(--ring);outline-offset:2px;}.ds-button-outline:active{filter:brightness(.98)}.ds-button-outline:disabled{pointer-events:none;opacity:.5}@media(prefers-reduced-motion:reduce){.ds-button-outline{transition:none}}",
+      "refersTo": "button-outline"
+    },
+    {
+      "name": "Ghost action",
+      "kind": "button",
+      "description": "Development-only visual preview of the imported shared Button/buttonVariants treatment; application code must use the official source.",
+      "html": "<button type=\"button\" class=\"ds-button-ghost\">Expand map</button>",
+      "css": ".ds-button-ghost{font-family:var(--font-geist-sans, sans-serif);display:inline-flex;max-width:100%;min-height:48px;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border:1px solid transparent;border-radius:var(--radius);font-size:14px;font-weight:600;line-height:20px;text-align:center;white-space:normal;text-decoration:none;cursor:pointer;transition:background-color 150ms,color 150ms;background:transparent;color:var(--foreground);min-height:44px;padding:8px 12px;}.ds-button-ghost:hover{background:var(--muted);color:var(--foreground);}.ds-button-ghost:focus-visible{outline:3px solid var(--ring);outline-offset:2px;}.ds-button-ghost:active{filter:brightness(.98)}.ds-button-ghost:disabled{pointer-events:none;opacity:.5}@media(prefers-reduced-motion:reduce){.ds-button-ghost{transition:none}}",
+      "refersTo": "button-ghost"
+    },
+    {
+      "name": "Navigation action",
+      "kind": "button",
+      "description": "Development-only visual preview of the imported shared Button/buttonVariants treatment; application code must use the official source.",
+      "html": "<a href=\"#comparison\" class=\"ds-button-link\"><svg aria-hidden=\"true\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m12 19-7-7 7-7M5 12h14\"/></svg>Back to comparison</a>",
+      "css": ".ds-button-link{font-family:var(--font-geist-sans, sans-serif);display:inline-flex;max-width:100%;min-height:48px;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border:1px solid transparent;border-radius:var(--radius);font-size:14px;font-weight:600;line-height:20px;text-align:center;white-space:normal;text-decoration:none;cursor:pointer;transition:background-color 150ms,color 150ms;background:transparent;color:var(--primary);text-underline-offset:4px;padding-inline:0;}.ds-button-link:hover{text-decoration:underline;}.ds-button-link:focus-visible{outline:3px solid var(--ring);outline-offset:2px;}.ds-button-link:active{filter:brightness(.98)}.ds-button-link:disabled{pointer-events:none;opacity:.5}@media(prefers-reduced-motion:reduce){.ds-button-link{transition:none}}",
+      "refersTo": "button-link"
+    },
+    {
+      "name": "Labeled input",
+      "kind": "input",
+      "description": "Development-only preview of imported Field, FieldLabel, and Input. Field labels use weight 500 and persistent association.",
+      "html": "<div class=\"ds-field\"><label class=\"ds-field-label\" for=\"ds-latitude\">Latitude (° N)</label><input class=\"ds-field-input\" id=\"ds-latitude\" type=\"number\" inputmode=\"decimal\" step=\"any\" value=\"13.1775\" aria-describedby=\"ds-field-help\"/><p class=\"ds-field-help\" id=\"ds-field-help\">Enter a coordinate within the Albay pilot area.</p></div>",
+      "css": ".ds-field{font-family:var(--font-geist-sans, sans-serif);display:flex;flex-direction:column;gap:8px;max-width:100%;color:var(--foreground)}.ds-field-label{font-size:14px;font-weight:500;line-height:1.375}.ds-field-input{height:48px;width:100%;min-width:0;padding:8px 12px;border:1px solid var(--input);border-radius:var(--radius);background:var(--card);color:var(--foreground);font:inherit;font-size:16px;transition:border-color 150ms}.ds-field-input::placeholder{color:var(--muted-foreground)}.ds-field-input:focus-visible{border-color:var(--ring);outline:3px solid var(--ring);outline-offset:2px;}.ds-field-input:disabled{pointer-events:none;opacity:.5;background:color-mix(in oklab,var(--input) 50%,transparent)}.ds-field-input[aria-invalid=\"true\"]{border-color:var(--destructive)}.ds-field-help{margin:0;color:var(--muted-foreground);font-size:14px;line-height:1.5}@media(prefers-reduced-motion:reduce){.ds-field-input{transition:none}}",
+      "refersTo": "input"
+    },
+    {
+      "name": "Location entry",
+      "kind": "custom",
+      "description": "Development-only visual preview of the real location-results Combobox and explicit-search InputGroup composition. Both columns are equal from a 24rem container; previews do not implement asynchronous requests or replace Base UI behavior.",
+      "html": "<div class=\"ds-location\"><div class=\"ds-location-grid\"><div class=\"ds-location-field\"><label class=\"ds-location-label\" for=\"ds-results\">Choose farm location</label><div class=\"ds-location-group\"><input id=\"ds-results\" class=\"ds-location-input\" role=\"combobox\" aria-expanded=\"false\" readonly placeholder=\"Choose a place\"/><button type=\"button\" class=\"ds-location-toggle\" aria-label=\"Show location results\"><svg aria-hidden=\"true\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m6 9 6 6 6-6\"/></svg></button></div></div><div class=\"ds-location-field\"><label class=\"ds-location-label\" for=\"ds-search\">Search in Albay</label><div class=\"ds-location-group\"><input id=\"ds-search\" class=\"ds-location-input\" type=\"search\" placeholder=\"Search for a place\"/><button type=\"button\" class=\"ds-location-search\" aria-label=\"Search\"><svg aria-hidden=\"true\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"11\" cy=\"11\" r=\"8\"/><path d=\"m21 21-4.35-4.35\"/></svg></button></div></div></div></div>",
+      "css": ".ds-location{font-family:var(--font-geist-sans, sans-serif);container-type:inline-size;color:var(--foreground)}.ds-location-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}.ds-location-field{min-width:0;display:flex;flex-direction:column;gap:8px}.ds-location-label{font-size:14px;font-weight:500;line-height:1.375}.ds-location-group{display:flex;align-items:center;min-width:0;height:48px;border:1px solid var(--input);border-radius:var(--radius);background:var(--card);padding-right:3px}.ds-location-group:has(.ds-location-input:focus-visible){border-color:var(--ring);outline:3px solid color-mix(in oklab,var(--ring) 50%,transparent)}.ds-location-input{flex:1;min-width:0;width:100%;height:100%;padding:8px 6px 8px 12px;border:0;border-radius:var(--radius);background:transparent;color:var(--foreground);font:inherit;font-size:16px;text-align:left;outline:none}.ds-location-input::placeholder{color:var(--muted-foreground)}.ds-location-toggle,.ds-location-search{display:flex;width:44px;height:44px;flex-shrink:0;align-items:center;justify-content:center;padding:0;border:1px solid transparent;border-radius:var(--radius);background:var(--card);color:var(--muted-foreground);cursor:pointer;transition:background-color 150ms}.ds-location-toggle:hover,.ds-location-toggle:active,.ds-location-toggle[aria-expanded=\"true\"]{background:var(--card)}.ds-location-search:hover{background:var(--muted);color:var(--foreground)}.ds-location-toggle:focus-visible,.ds-location-search:focus-visible{outline:3px solid var(--ring);outline-offset:2px;}.ds-location-search:disabled{opacity:.5;pointer-events:none}@container(min-width:24rem){.ds-location-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(prefers-reduced-motion:reduce){.ds-location-toggle,.ds-location-search{transition:none}}"
+    },
+    {
+      "name": "Labeled choices",
+      "kind": "input",
+      "description": "Development-only preview of the imported Checkbox and RadioGroup states. The app retains their Base UI checked, labeling, keyboard, and disabled contracts.",
+      "html": "<div class=\"ds-choices\"><label class=\"ds-choice\"><span class=\"ds-choice-control\"><input class=\"ds-choice-checkbox\" type=\"checkbox\" checked/><svg aria-hidden=\"true\" width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m20 6-11 11-5-5\"/></svg></span><span>Rice</span></label><label class=\"ds-choice\"><input class=\"ds-choice-radio\" type=\"radio\" name=\"ds-irrigation\" checked/><span>Adequate</span></label><label class=\"ds-choice\"><input class=\"ds-choice-radio\" type=\"radio\" name=\"ds-irrigation\"/><span>Limited</span></label></div>",
+      "css": ".ds-choices{font-family:var(--font-geist-sans, sans-serif);display:flex;flex-wrap:wrap;gap:8px 24px;color:var(--foreground)}.ds-choice{display:flex;align-items:center;gap:8px;min-height:44px;font-size:14px;font-weight:500;cursor:pointer}.ds-choice-control{position:relative;display:flex;width:16px;height:16px}.ds-choice-checkbox,.ds-choice-radio{appearance:none;flex-shrink:0;width:16px;height:16px;margin:0;border:1px solid var(--input);background:var(--card);cursor:pointer}.ds-choice-checkbox{border-radius:4px}.ds-choice-radio{border-radius:50%}.ds-choice-checkbox:checked,.ds-choice-radio:checked{border-color:var(--primary)}.ds-choice-checkbox:checked{background:var(--card)}.ds-choice-control svg{position:absolute;inset:1px;color:var(--primary);pointer-events:none;display:none}.ds-choice-checkbox:checked+svg{display:block}.ds-choice-radio:checked{background:radial-gradient(circle,var(--primary) 0 4px,var(--card) 4px)}.ds-choice-checkbox:focus-visible,.ds-choice-radio:focus-visible{outline:3px solid var(--ring);outline-offset:2px;}.ds-choice-checkbox:disabled,.ds-choice-radio:disabled{opacity:.5;cursor:not-allowed}"
+    },
+    {
+      "name": "Shared header navigation",
+      "kind": "nav",
+      "description": "Development-only preview of AppShell brand navigation and imported outline Badge; the app also supplies the keyboard skip link and main landmark.",
+      "html": "<header class=\"ds-header\"><a href=\"#planner\" class=\"ds-brand\" aria-label=\"AgriMatch home\"><svg aria-hidden=\"true\" width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" fill=\"currentColor\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9.937 15.5a2 2 0 0 0-1.437-1.437l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .962 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.582a.5.5 0 0 1 0 .962L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.962 0Z\"/></svg><span>Agri<span class=\"ds-brand-accent\">Match</span></span></a><span class=\"ds-pilot\">Albay pilot · Demo</span></header>",
+      "css": ".ds-header{font-family:var(--font-geist-sans, sans-serif);display:flex;min-height:64px;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 12px;padding:8px 0;border-bottom:1px solid var(--border);color:var(--foreground)}.ds-brand{display:inline-flex;min-height:44px;max-width:100%;align-items:center;gap:12px;border-radius:var(--radius);font-size:20px;font-weight:700;line-height:1.5;letter-spacing:-.025em;color:var(--foreground);text-decoration:none}.ds-brand>svg{color:var(--brand-mark);flex-shrink:0}.ds-brand-accent{color:var(--primary)}.ds-brand:focus-visible{outline:3px solid var(--ring);outline-offset:2px;}.ds-pilot{display:inline-flex;min-height:28px;max-width:100%;align-items:center;padding:4px 12px;border:1px solid var(--border);border-radius:9999px;font-size:14px;font-weight:600;line-height:20px;color:var(--foreground)}"
+    },
+    {
+      "name": "Semantic badges",
+      "kind": "chip",
+      "description": "Development-only preview of imported crop, success, and outlined rotation Badge variants. Pink uses forest text for contrast; labels wrap and are not standalone actions.",
+      "html": "<div class=\"ds-badge-set\"><span class=\"ds-badge ds-badge-crop\">Rice</span><span class=\"ds-badge ds-badge-success\"><svg aria-hidden=\"true\" width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m20 6-11 11-5-5\"/></svg>Farm location selected</span><span class=\"ds-badge ds-badge-blue\">Option 1</span><span class=\"ds-badge ds-badge-green\">Option 2</span><span class=\"ds-badge ds-badge-pink\">Option 3</span></div>",
+      "css": ".ds-badge-set{font-family:var(--font-geist-sans, sans-serif);display:flex;flex-wrap:wrap;align-items:center;gap:8px}.ds-badge{display:inline-flex;min-height:28px;max-width:100%;align-items:center;justify-content:center;gap:8px;padding:4px 12px;border:1px solid transparent;border-radius:9999px;font-size:14px;font-weight:600;line-height:20px;white-space:normal;text-align:center}.ds-badge-crop{background:var(--accent);color:var(--accent-foreground)}.ds-badge-success{background:var(--success-surface);color:var(--success)}.ds-badge-blue{background:var(--card);color:var(--chart-1);border-color:var(--chart-1)}.ds-badge-green{background:var(--card);color:var(--chart-2);border-color:var(--chart-2)}.ds-badge-pink{background:var(--card);color:var(--foreground);border-color:var(--chart-3)}",
+      "refersTo": "badge"
+    },
+    {
+      "name": "Bounded feature Card",
+      "kind": "card",
+      "description": "Development-only preview of the installed official Card. Available only for a genuinely bounded feature; planner, snapshots, rotation options, and detail use open sections and must not adopt this as layout decoration.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-card-header\"><h2 class=\"ds-card-title\">Bounded feature</h2><p class=\"ds-card-description\">Use only when the feature needs its own surface.</p></div><div class=\"ds-card-content\">The working planner and comparison remain open sections.</div></div>",
+      "css": ".ds-card{font-family:var(--font-geist-sans, sans-serif);display:flex;min-width:0;flex-direction:column;gap:16px;padding:16px 0;border:1px solid var(--border);border-radius:var(--radius-panel);background:var(--card);color:var(--card-foreground);font-size:16px;line-height:1.5}.ds-card-header{display:grid;gap:4px;padding:0 16px}.ds-card-title{margin:0;font-size:20px;font-weight:600;line-height:1.375}.ds-card-description{margin:0;color:var(--muted-foreground);font-size:14px;line-height:20px}.ds-card-content{padding:0 16px}@media(min-width:640px){.ds-card{gap:24px;padding:24px 0}.ds-card-header,.ds-card-content{padding:0 24px}}",
+      "refersTo": "card"
+    }
+  ],
+  "narrative": {
+    "northStar": "The farm planning workspace",
+    "overview": "This document defines the required interface system for every route and shared component. MUST means required; SHOULD permits a documented, concrete reason to deviate. Read this file before implementing or reviewing interface changes.\n\nAgriMatch is calm, practical, and trustworthy: cream page backgrounds, white controls, forest-green actions, and restrained sage accents. Readable farm inputs, clear comparisons, and honest explanations provide the hierarchy. The agricultural palette and Geist fonts are durable brand commitments from `PRODUCT.md`.",
+    "keyCharacteristics": [
+      "Open working sections with aligned controls and restrained divisions.",
+      "One shared product scale, light palette, and official component vocabulary.",
+      "Visible farm state, explicit requests, and clearly labeled demo results.",
+      "Responsive document flow with reachable actions and unobscured focus."
+    ],
+    "rules": [
+      {
+        "name": "The Official Imports Rule",
+        "body": "All application controls and styled UI surfaces MUST use official shadcn/ui components imported from the project's shared UI directory. Domain components MUST compose those imports. A custom HTML/CSS recreation of an available shadcn component is noncompliant.",
+        "section": "overview"
+      },
+      {
+        "name": "The Flat Workspace Rule",
+        "body": "Ordinary workspace, snapshot, rotation, and detail content stays open. A border or tonal Alert identifies a meaningful boundary; it does not justify another Card.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** import official shared shadcn components for all supplied UI roles and compose them into domain features.",
+      "**Do** preserve the palette through semantic tokens, readable color pairs, and consistent variants.",
+      "**Do** use semantic HTML for document structure and ordinary text, with the specialist exceptions kept narrow.",
+      "**Do** make every state honest, labeled, keyboard-accessible, and recoverable where recovery is possible."
+    ],
+    "donts": [
+      "**Don't** hand-build a control, Card, Badge, menu, or overlay that already has an official shadcn implementation.",
+      "**Don't** introduce another UI kit, direct primitive-library implementations, or a second component base.",
+      "**Don't** add route-level color literals, inline CSS skins, `!important` patches, or broad selectors that restyle shared primitives.",
+      "**Don't** hide meaningful content in CSS pseudo-elements or rely on emoji, arbitrary glyphs, color, or hover alone to explain an action.",
+      "**Don't** treat registry updates, new routes, or documentation previews as exempt from import, state, accessibility, and rendered verification requirements."
+    ]
+  }
+}
+
+

@@ -1,3 +1,7 @@
+## Interface design
+
+Read [DESIGN.md](./DESIGN.md) before implementing or reviewing UI changes. Follow its strict shadcn/ui import policy, semantic color tokens, component mappings, and verification protocol across every route and shared component.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 ## This is NOT the Next.js you know
