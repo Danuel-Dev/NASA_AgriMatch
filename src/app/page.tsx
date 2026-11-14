@@ -1,69 +1,43 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
+import type { FarmPoint } from "./components/farm-map";
+
+const FarmMap = dynamic(() => import("./components/farm-map"), { ssr: false, loading: () => <div className="map-loading">Loading Albay map…</div> });
+const cropOptions = ["Rice", "Corn", "Coconut", "Abaca", "Vegetables"];
+const priorities = ["Conserve water", "Improve soil health", "Climate suitability"];
+const steps = [["01", "Locate your farm", "Choose a place in Albay"], ["02", "Describe your farm", "Crops, water, and priorities"], ["03", "Compare rotations", "See the trade-offs clearly"]];
+type SearchResult = { place_id: number; display_name: string; lat: string; lon: string; type: string };
+
+const componentStyles = `.farm-options{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 48px;margin-top:30px;padding:30px 0 12px;border-top:1px solid #dce5d9}.farm-option{display:flex!important;align-items:flex-start;gap:14px;min-width:0}.option-icon{display:grid;place-items:center;flex:0 0 38px;height:42px;color:#2b6b4a;font-size:27px;line-height:1}.option-content{display:block!important;min-width:0;flex:1}.option-content>strong{display:block!important;margin:0 0 9px;font-size:17px;line-height:1.2;color:#17352b}.option-content select{display:block;width:100%;height:50px;padding:0 15px;border:1px solid #c9d8c4;border-radius:11px;background:#fff;color:#17352b;font-size:16px;outline:0}.segmented-control{display:flex;width:100%;height:50px;padding:4px;border-radius:13px;background:#edf3e9}.segmented-control button{flex:1;border:0;border-radius:10px;background:transparent;color:#17352b;font-size:16px;font-weight:600;cursor:pointer}.segmented-control button.selected{background:#2b6b4a;color:#fff;box-shadow:none}.crop-picker{border:1px solid #c9d8c4;border-radius:11px;background:#fff;padding:9px 12px}.crop-chips{display:flex;flex-wrap:wrap;gap:6px;min-height:31px;align-items:center}.crop-chip{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:18px;padding:6px 10px;background:#eaf3e6;color:#2b6b4a;font-size:13px;font-weight:600}.crop-chip button{border:0;background:transparent;color:#2b6b4a;cursor:pointer;font-size:16px;line-height:1;padding:0}.crop-placeholder{color:#87968a;font-size:14px}.crop-options{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px;padding-top:8px;border-top:1px solid #edf1ed}.crop-option{display:inline-flex;align-items:center;gap:5px;color:#52665a;font-size:12px;cursor:pointer}.crop-option input{accent-color:#2b6b4a}.farm-options+.priority-row{margin-top:24px}@media(max-width:750px){.farm-options{grid-template-columns:1fr!important;gap:22px}}`;
 
 export default function Home() {
-  return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+  const router = useRouter();
+  const [, setLocation] = useState("Albay, Philippines");
+  const [crops, setCrops] = useState(["Rice"]);
+  const [irrigation, setIrrigation] = useState("Adequate");
+  const [soil, setSoil] = useState("Clay loam");
+  const [season, setSeason] = useState("Dry season");
+  const [selected, setSelected] = useState(["Conserve water"]);
+  const [point, setPoint] = useState<FarmPoint | null>(null);
+  const [search, setSearch] = useState("");
+  const [searching, setSearching] = useState(false);
+  const [results, setResults] = useState<SearchResult[]>([]);
+  const [locationMessage, setLocationMessage] = useState("");
+  useEffect(() => { const button = document.querySelector<HTMLButtonElement>(".primary-button"); if (!button) return; const goToAnalysis = () => router.push("/analysis"); button.removeAttribute("disabled"); button.addEventListener("click", goToAnalysis); return () => button.removeEventListener("click", goToAnalysis); }, [router]);
+
+  const toggleCrop = (crop: string) => setCrops(current => current.includes(crop) ? current.filter(item => item !== crop) : [...current, crop]);
+  const togglePriority = (priority: string) => setSelected(current => current.includes(priority) ? current.filter(item => item !== priority) : [...current, priority]);
+  const selectResult = (result: SearchResult) => { setPoint({ lat: Number(result.lat), lng: Number(result.lon) }); setLocation(result.display_name.split(",")[0]); setSearch(result.display_name.split(",").slice(0, 2).join(",")); setResults([]); setLocationMessage(""); };
+  const useMyLocation = () => { if (!navigator.geolocation) { setLocationMessage("Location is not available in this browser."); return; } setLocationMessage("Finding your location…"); navigator.geolocation.getCurrentPosition(({ coords }) => { setPoint({ lat: coords.latitude, lng: coords.longitude }); setLocationMessage("Location found"); }, () => setLocationMessage("We could not access your location.")); };
+  const searchPlace = async () => { if (!search.trim()) return; setSearching(true); setResults([]); setLocationMessage(""); try { const params = new URLSearchParams({ format: "jsonv2", addressdetails: "1", limit: "6", countrycodes: "ph", bounded: "1", viewbox: "123.25,13.65,124.15,12.85", q: `${search}, Albay, Bicol Region, Philippines` }); const response = await fetch(`https://nominatim.openstreetmap.org/search?${params}`); const matches = await response.json() as SearchResult[]; if (!matches.length) { setLocationMessage("No barangay, city, or municipality found in Albay."); return; } setResults(matches); } catch { setLocationMessage("Search is temporarily unavailable. You can still select the map manually."); } finally { setSearching(false); } };
+
+  return <><style>{componentStyles}</style><main className="app-shell"><header className="topbar"><div className="brand"><b>✦</b> Agri<span>Match</span></div><div className="status-pill"><i /> Albay pilot · MVP</div></header>
+    <section className="hero"><div><p className="eyebrow">CLIMATE-SMART FARM PLANNING</p><h1>Know your land.<br/><em>Grow smarter.</em></h1><p className="hero-text">A simple way for Albay farmers to explore crops and compare climate-resilient rotations for their farm.</p><div className="data-note"><span>◌</span><div><strong>Data connection in progress</strong><small>NASA climate and soil layers will appear here when available.</small></div></div></div><div className="hero-art"><div className="sun"/><div className="mountain mountain-back"/><div className="mountain mountain-front"/><div className="field field-one"/><div className="field field-two"/><div className="field field-three"/><div className="farm-pin">+</div></div></section>
+    <section className="workspace"><div className="section-heading"><div><p className="eyebrow">YOUR FARM SNAPSHOT</p><h2>Choose your farm location</h2></div><span className="draft-label">Albay focus</span></div><p className="map-subtitle">Search a barangay, city, or municipality, use your location, or adjust the pin.</p><div className="map-controls"><div className="search-area"><div className="search-box"><span>⌕</span><input value={search} onChange={event=>setSearch(event.target.value)} onKeyDown={event=>{if(event.key === "Enter") void searchPlace();}} placeholder="Search barangays, cities or municipalities"/><button type="button" onClick={()=>void searchPlace()} disabled={searching}>{searching?"…":"⌄"}</button></div>{results.length>0&&<div className="search-results">{results.map(result=><button type="button" key={result.place_id} onClick={()=>selectResult(result)}><strong>{result.display_name.split(",")[0]}</strong><small>{result.display_name}</small></button>)}</div>}</div><button type="button" className="location-button" onClick={useMyLocation}><span>⌖</span> Use my location</button></div>{locationMessage&&<p className="location-message">{locationMessage}</p>}<div className="map-instruction"><span>1</span><div><strong>Click your farm on the map</strong><small>Drag the pin to refine its position. We’ll use this location for the environmental analysis.</small></div></div><div className="map-wrap"><FarmMap point={point} onChange={setPoint}/></div>{point&&<div className="coordinates"><span>✓ Farm location selected</span><code>{point.lat.toFixed(5)}° N, {point.lng.toFixed(5)}° E</code></div>}
+      <div className="farm-options"><div className="farm-option"><span className="option-icon crop-icon">♧</span><span className="option-content"><strong>Current crops</strong><div className="crop-picker"><div className="crop-chips">{crops.length ? crops.map(crop=><span className="crop-chip" key={crop}>{crop}<button type="button" aria-label={`Remove ${crop}`} onClick={()=>toggleCrop(crop)}>×</button></span>) : <span className="crop-placeholder">Select the crops grown on this farm</span>}</div><div className="crop-options">{cropOptions.map(crop=><label className="crop-option" key={crop}><input type="checkbox" checked={crops.includes(crop)} onChange={()=>toggleCrop(crop)}/>{crop}</label>)}</div></div></span></div><div className="farm-option"><span className="option-icon water-icon">▼</span><span className="option-content"><strong>Irrigation</strong><span className="segmented-control"><button type="button" className={irrigation === "Adequate" ? "selected" : ""} onClick={()=>setIrrigation("Adequate")}>Adequate</button><button type="button" className={irrigation === "Limited" ? "selected" : ""} onClick={()=>setIrrigation("Limited")}>Limited</button></span></span></div><label className="farm-option"><span className="option-icon soil-icon">▱</span><span className="option-content"><strong>Soil texture</strong><select value={soil} onChange={event=>setSoil(event.target.value)}><option>Clay loam</option><option>Sandy loam</option><option>Clay</option><option>Loam</option></select></span></label><label className="farm-option"><span className="option-icon season-icon">□</span><span className="option-content"><strong>Season</strong><select value={season} onChange={event=>setSeason(event.target.value)}><option>Dry season</option><option>Wet season</option><option>Transition season</option></select></span></label></div>
+      <div className="priority-row"><div><span className="field-title">What matters most?</span><small>Choose one or more priorities</small></div><div className="priority-options">{priorities.map(priority=><button type="button" key={priority} className={selected.includes(priority)?"priority active":"priority"} onClick={()=>togglePriority(priority)}><span>{selected.includes(priority)?"✓":"+"}</span>{priority}</button>)}</div></div><button className="primary-button" disabled>Analyze my farm <span>→</span><small>Waiting for data</small></button></section>
+    <section className="journey"><div className="section-heading"><div><p className="eyebrow">THE MVP JOURNEY</p><h2>From location to decision</h2></div><p className="journey-intro">Three focused steps turn environmental data into a conversation about better choices.</p></div><div className="step-grid">{steps.map(([number, title, description])=><article className="step-card" key={number}><span className="step-number">{number}</span><h3>{title}</h3><p>{description}</p></article>)}</div></section><footer><span>AgriMatch</span><span>Built for climate-resilient farming in Albay</span></footer></main></>;
 }

@@ -1,0 +1,15 @@
+"use client";
+
+import { Suspense } from "react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+
+const details: Record<string, { name: string; crops: string; score: string; summary: string; strengths: string[]; tradeoff: string }> = {
+  "option-1": { name: "Water-Smart Rotation", crops: "Rice → Corn → Vegetables", score: "82", summary: "A placeholder plan focused on conserving water while maintaining a strong climate fit.", strengths: ["Lower estimated water pressure", "Good fit for rain-fed planning", "Keeps multiple crop options available"], tradeoff: "Potential productivity may vary during unusually dry periods." },
+  "option-2": { name: "Soil Builder Rotation", crops: "Corn → Legumes → Rice", score: "78", summary: "A placeholder plan that gives soil health more weight between production seasons.", strengths: ["Includes a soil-restoring crop", "Supports crop diversity", "May improve long-term soil condition"], tradeoff: "May require an extra planning step and a temporary lower-return crop." },
+  "option-3": { name: "Climate Fit Rotation", crops: "Coconut → Abaca → Vegetables", score: "75", summary: "A placeholder plan that balances climate suitability with a diverse crop mix.", strengths: ["Diversifies farm production", "Balances climate suitability", "Offers several harvest windows"], tradeoff: "Different crops may require different management practices." },
+};
+
+function RotationContent() { const params = useParams<{ rotation: string }>(); const detail = details[params.rotation] ?? details["option-1"]; return <main className="detail-page"><header className="analysis-header"><Link href="/analysis" className="back-link">← Back to comparison</Link><div className="brand"><b>✦</b> Agri<span>Match</span></div><span className="analysis-status">PLACEHOLDER ANALYSIS</span></header><section className="detail-hero"><p className="eyebrow">ROTATION DETAIL</p><h1>{detail.name}</h1><p>{detail.summary}</p><div className="detail-score"><strong>{detail.score}</strong><span>/100 placeholder fit score</span></div></section><section className="detail-grid"><article className="detail-card visual-card"><span className="panel-kicker">RECOMMENDED SEQUENCE</span><div className="sequence">{detail.crops.split(" → ").map((crop, index)=><span key={crop}><b>{index + 1}</b>{crop}{index < 2 && <i>→</i>}</span>)}</div></article><article className="detail-card"><span className="panel-kicker">WHY IT MAY WORK</span><ul>{detail.strengths.map(strength=><li key={strength}>✓ {strength}</li>)}</ul></article><article className="detail-card tradeoff-card"><span className="panel-kicker">TRADE-OFF TO CONSIDER</span><h2>{detail.tradeoff}</h2><p>Placeholder explanation. This will be calculated from the farm’s climate, soil, water access, and selected priorities.</p></article></section></main>; }
+
+export default function RotationPage() { return <Suspense fallback={<main className="detail-page"><p>Loading rotation details…</p></main>}><RotationContent /></Suspense>; }
