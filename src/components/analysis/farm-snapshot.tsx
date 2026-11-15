@@ -17,7 +17,7 @@ export function FarmSnapshot() {
   const { language, t } = useLanguage();
 
   return (
-    <section aria-label="Your farm snapshot" className="border-y py-4">
+    <section aria-label="Your farm snapshot" className="border-y py-3">
       {farm.point ? (
         <div className="space-y-3">
           <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-2">
@@ -27,8 +27,8 @@ export function FarmSnapshot() {
             </div>
             <p className="wrap-anywhere text-sm text-muted-foreground">{t("pilot")}</p>
           </div>
-          <div className="pt-2">
-            <FarmMap point={farm.point} className="h-64 lg:h-[22rem]" />
+          <div className="pt-1">
+            <FarmMap point={farm.point} className="h-52 lg:h-72" />
           </div>
         </div>
       ) : (
@@ -52,21 +52,21 @@ export function FarmSnapshot() {
 export function FarmConditions({ result }: { result?: RecommendationResult | null }) {
   const { farm } = useFarm();
   const { language, t } = useLanguage();
-  return <section aria-labelledby="farm-conditions-title" className="space-y-2 border-y py-3">
-    <h2 id="farm-conditions-title" className="text-lg font-semibold">{t("farmConditions")} {language === "fil" ? "at mga prayoridad" : "and priorities"}</h2>
-    <div className="grid items-start gap-3 lg:grid-cols-2 lg:gap-5">
-      <div className="space-y-2">
-        <h3 className="text-sm font-semibold">{t("farmConditions")}</h3>
-        <dl className="space-y-1 text-xs">
+  return <section aria-labelledby="farm-conditions-title" className="space-y-1 border-y py-1.5">
+    <h2 id="farm-conditions-title" className="text-base font-semibold">{t("farmConditions")} {language === "fil" ? "at mga prayoridad" : "and priorities"}</h2>
+    <div className="grid items-start gap-2 lg:grid-cols-2 lg:gap-4">
+      <div className="space-y-1">
+        <h3 className="text-xs font-semibold">{t("farmConditions")}</h3>
+        <dl className="space-y-0.5 text-xs">
           {[["Soil texture", farm.soil], ["Irrigation", farm.irrigation], ["Season", farm.season]].map(([label, value]) => <div key={label} className="flex flex-wrap justify-between gap-x-4 gap-y-1"><dt className="text-muted-foreground">{label}</dt><dd className="font-medium">{value}</dd></div>)}
           {result?.soil.ph != null && <div className="flex flex-wrap justify-between gap-x-4 gap-y-1"><dt className="text-muted-foreground">Sampled soil pH</dt><dd className="font-medium">{result.soil.ph.toFixed(1)}</dd></div>}
           {result?.soil.texture && <div className="flex flex-wrap justify-between gap-x-4 gap-y-1"><dt className="text-muted-foreground">Derived texture</dt><dd className="font-medium">{result.soil.texture}</dd></div>}
           {result && result.soil.ph == null && <div className="flex flex-wrap justify-between gap-x-4 gap-y-1"><dt className="text-muted-foreground">Soil estimate</dt><dd className="font-medium">NoData at exact pin</dd></div>}
         </dl>
       </div>
-      <div className="space-y-3">
-        <div className="space-y-1"><h3 className="text-sm font-semibold">{t("current")}</h3><div className="flex flex-wrap gap-1" aria-label={t("current")}>{farm.currentRotation.map((crop, index) => <Badge key={`${crop}-${index}`} variant="crop" className="px-2 py-1 text-xs">{language === "fil" ? "Panahon" : "Period"} {index + 1}: {language === "fil" ? CROP_LABELS_FIL[crop] : crop}</Badge>)}</div></div>
-        <div className="space-y-1"><h3 className="text-sm font-semibold">{t("yourPriorities")}</h3><div className="flex flex-wrap gap-1">{farm.priorities.map((priority) => <Badge key={priority} variant="secondary" className="px-2 py-1 text-xs">{language === "fil" ? PRIORITY_LABELS_FIL[priority] : priority}</Badge>)}</div></div>
+      <div className="space-y-1">
+        <div className="space-y-0.5"><h3 className="text-xs font-semibold">{t("current")}</h3><div className="flex flex-wrap gap-1" aria-label={t("current")}>{farm.currentRotation.map((crop, index) => <Badge key={`${crop}-${index}`} variant="crop" className="px-1.5 py-0.5 text-[11px]">{language === "fil" ? "Panahon" : "Period"} {index + 1}: {language === "fil" ? CROP_LABELS_FIL[crop] : crop}</Badge>)}</div></div>
+        <div className="space-y-0.5"><h3 className="text-xs font-semibold">{t("yourPriorities")}</h3><div className="flex flex-wrap gap-1">{farm.priorities.map((priority) => <Badge key={priority} variant="secondary" className="px-1.5 py-0.5 text-[11px]">{language === "fil" ? PRIORITY_LABELS_FIL[priority] : priority}</Badge>)}</div></div>
       </div>
     </div>
   </section>;

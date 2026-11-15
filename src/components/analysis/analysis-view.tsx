@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { ArrowLeft, HelpCircle, Info, LoaderCircle, TriangleAlert } from "lucide-react";
+import { ArrowLeft, HelpCircle, Info, LoaderCircle, RefreshCw, TriangleAlert } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
@@ -59,7 +59,7 @@ export function AnalysisView() {
           <Info aria-hidden="true" /><AlertTitle>{t("screeningEstimate")}</AlertTitle><AlertDescription>{result.disclaimer}</AlertDescription>
         </Alert>
       )}
-      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
+      <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
         <FarmSnapshot />
         <div className="space-y-6">
           {result && <FarmConditions result={result} />}
@@ -75,6 +75,11 @@ export function AnalysisView() {
           {(result?.rotations ?? []).map((rotation) => <RotationOption key={rotation.id} rotation={rotation} recommended={rotation.id === result?.rotations.reduce((best, option) => option.score > best.score ? option : best, result.rotations[0]).id} />)}
         </div>
         {result && <TradeoffTable rotations={result.rotations} />}
+        <div className="flex justify-center pt-2">
+          <Link href="/?start=1" className={buttonVariants({ className: "h-16 min-w-72 rounded-2xl px-8 text-lg" })}>
+            {language === "fil" ? "Magplano ng ibang bukid" : "Plan another farm"} <RefreshCw aria-hidden="true" />
+          </Link>
+        </div>
       </section>
     </div>
   );
@@ -97,10 +102,10 @@ function EnvironmentalPredictors({ result }: { result: RecommendationResult }) {
   const { language } = useLanguage();
   const isFil = language === "fil";
   const [showHelp, setShowHelp] = useState(false);
-  return <section aria-labelledby="environment-title" className="space-y-2 border-y py-3">
+  return <section aria-labelledby="environment-title" className="space-y-1 border-y py-1.5">
     <div className="space-y-1">
       <div className="flex items-center gap-2">
-        <h2 id="environment-title" className="text-lg font-semibold">{isFil ? "Mga salik sa kapaligiran" : "Environmental predictors"}</h2>
+        <h2 id="environment-title" className="text-base font-semibold">{isFil ? "Mga salik sa kapaligiran" : "Environmental predictors"}</h2>
         <span className="group relative inline-flex">
           <button
             type="button"
@@ -116,7 +121,7 @@ function EnvironmentalPredictors({ result }: { result: RecommendationResult }) {
           </span>
         </span>
       </div>
-      <p className="text-sm text-muted-foreground">{isFil ? "Mga halaga ng klima at lupa na ginamit ng makina ng rekomendasyon." : "The climate and soil values used by the recommendation engine."}</p>
+      <p className="text-xs text-muted-foreground">{isFil ? "Mga halaga ng klima at lupa na ginamit ng makina ng rekomendasyon." : "The climate and soil values used by the recommendation engine."}</p>
     </div>
     <div className="grid gap-2 md:grid-cols-3">
       <Metric label={isFil ? "Tinatayang taunang ulan" : "Estimated annual rainfall"} value={`${Math.round(result.climate.rainfall.rainfallTotal)} mm`} detail={isFil ? "12-buwang average mula sa NASA POWER" : "12-month NASA POWER average"} />
@@ -128,7 +133,7 @@ function EnvironmentalPredictors({ result }: { result: RecommendationResult }) {
 }
 
 function Metric({ label, value, detail }: { label: string; value: string; detail: string }) {
-  return <div className="rounded-lg border bg-card p-3"><p className="text-xs text-muted-foreground">{label}</p><p className="mt-1 text-lg font-semibold">{value}</p><p className="mt-1 text-[11px] leading-tight text-muted-foreground">{detail}</p></div>;
+  return <div className="rounded-lg border bg-card p-2"><p className="text-[11px] text-muted-foreground">{label}</p><p className="mt-0.5 text-base font-semibold">{value}</p><p className="mt-0.5 text-[10px] leading-tight text-muted-foreground">{detail}</p></div>;
 }
 
 export function CropResult({ assessment }: { assessment: CropAssessment }) {

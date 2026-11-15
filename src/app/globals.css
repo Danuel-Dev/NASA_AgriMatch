@@ -135,6 +135,15 @@
   font-weight: 600;
 }
 
+@keyframes farm-loading-progress {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+@utility animate-farm-loading-progress {
+  animation: farm-loading-progress 1s ease-out forwards;
+}
+
 /* One measured space keeps the mobile action from covering the final field. */
 @media (width < 64rem) {
   .compare-action-space {
