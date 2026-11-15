@@ -1,11 +1,13 @@
 "use client";
 
 import { ChevronRight } from "lucide-react";
+import { useState } from "react";
 import { FarmForm } from "./farm-form";
 import { useLanguage } from "@/components/language-provider";
 
 export function FarmPlanner() {
   const { t } = useLanguage();
+  const [step, setStep] = useState<1 | 2>(1);
   return (
     <div className="space-y-6">
       <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
@@ -16,15 +18,15 @@ export function FarmPlanner() {
           </p>
         </div>
         <ol aria-label="Planning steps" className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-          {[t("location"), t("conditions"), t("comparison")].map((step, index) => (
-            <li key={step} className="flex items-center gap-2">
+          {[t("location"), t("conditions"), t("comparison")].map((label, index) => (
+            <li key={label} className={`flex items-center gap-2 ${index + 1 === step ? "font-semibold text-primary" : ""}`}>
               {index > 0 && <ChevronRight className="size-4" aria-hidden="true" />}
-              <span>{step}</span>
+              <span>{label}</span>
             </li>
           ))}
         </ol>
       </div>
-      <FarmForm />
+      <FarmForm step={step} onStepChange={setStep} />
     </div>
   );
 }

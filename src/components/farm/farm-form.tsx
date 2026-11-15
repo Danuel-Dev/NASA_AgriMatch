@@ -8,10 +8,12 @@ import { FarmFields } from "./farm-fields";
 import { FarmLocation } from "./farm-location";
 import { CompareAction } from "./compare-action";
 import { useLanguage } from "@/components/language-provider";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
-export function FarmForm() {
+export function FarmForm({ step, onStepChange }: { step: 1 | 2; onStepChange: (step: 1 | 2) => void }) {
   const { farm } = useFarm();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const router = useRouter();
   const [submitting, startTransition] = useTransition();
   const ready =
@@ -35,24 +37,19 @@ export function FarmForm() {
       : t("ready");
 
   return (
-    <div id="farm-workspace" className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_25rem]">
-      <section aria-labelledby="farm-workspace-title" className="min-w-0 space-y-4">
-        <div className="space-y-1">
-          <h2 id="farm-workspace-title" className="text-title">{t("farmLocation")}</h2>
-          <p className="text-sm text-muted-foreground">{t("locationHelp")}</p>
-        </div>
+    <div id="farm-workspace" className="space-y-6">
+      {step === 1 ? <section aria-labelledby="farm-workspace-title" className="min-w-0 space-y-4">
+        <div className="space-y-1"><h2 id="farm-workspace-title" className="text-title">{t("farmLocation")}</h2><p className="text-sm text-muted-foreground">{t("locationHelp")}</p></div>
         <FarmLocation />
-      </section>
-      <section aria-labelledby="farm-setup-title" className="min-w-0 space-y-4 border-t pt-6 lg:border-t-0 lg:pt-0">
-        <div className="space-y-1">
-          <h2 id="farm-setup-title" className="text-title">{t("farmConditions")}</h2>
-          <p className="text-sm text-muted-foreground">{t("demoPresets")}</p>
-        </div>
+        <div className="flex justify-end border-t pt-4"><Button type="button" size="lg" disabled={!farm.point || !isSupportedPoint(farm.point)} onClick={() => onStepChange(2)}>{language === "fil" ? "Magpatuloy sa detalye ng bukid" : "Continue to farm details"} <ArrowRight aria-hidden="true" /></Button></div>
+      </section> : <section aria-labelledby="farm-setup-title" className="min-w-0 space-y-4">
+        <div className="space-y-1"><h2 id="farm-setup-title" className="text-title">{t("farmConditions")}</h2><p className="text-sm text-muted-foreground">{t("demoPresets")}</p></div>
         <form onSubmit={compareFarm} className="space-y-4">
           <FarmFields />
-          <CompareAction ready={ready} submitting={submitting} help={help} />
+          <div className="flex flex-wrap items-center justify-between gap-3"><Button type="button" variant="outline" onClick={() => onStepChange(1)}><ArrowLeft aria-hidden="true" />{language === "fil" ? "Bumalik sa lokasyon" : "Back to location"}</Button><div className="min-w-0 flex-1"><CompareAction ready={ready} submitting={submitting} help={help} /></div></div>
         </form>
-      </section>
+      </section>}
+      {/* The two sections above are intentionally sequential; the existing analysis route remains the third step. */}
     </div>
   );
 }
