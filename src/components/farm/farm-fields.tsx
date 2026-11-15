@@ -206,7 +206,7 @@ function FieldHelp({ label, children }: { label: string; children: React.ReactNo
       <AccordionItem value={label} className="border-0">
         <AccordionTrigger
           aria-label={label}
-          className="size-7 items-center justify-center rounded-full p-0 text-muted-foreground hover:bg-accent hover:no-underline [&>svg]:hidden"
+          className="size-7 items-center justify-center rounded-full p-0 text-muted-foreground hover:bg-accent hover:no-underline [&>[data-slot=accordion-trigger-icon]]:hidden"
         >
           <HelpCircle className="size-4" aria-hidden="true" />
         </AccordionTrigger>
