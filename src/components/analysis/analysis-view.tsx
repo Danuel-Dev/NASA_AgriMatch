@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { ArrowLeft, Info, LoaderCircle, TriangleAlert } from "lucide-react";
+import { ArrowLeft, HelpCircle, Info, LoaderCircle, TriangleAlert } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
@@ -87,8 +87,30 @@ function EnvironmentalSummary({ crops }: { crops: CropAssessment[] }) {
 }
 
 function EnvironmentalPredictors({ result }: { result: RecommendationResult }) {
+  const { language } = useLanguage();
+  const isFil = language === "fil";
+  const [showHelp, setShowHelp] = useState(false);
   return <section aria-labelledby="environment-title" className="space-y-4 border-y py-5">
-    <div className="space-y-1"><h2 id="environment-title" className="text-title">Environmental predictors</h2><p className="text-sm text-muted-foreground">The climate and soil values used by the recommendation engine.</p></div>
+    <div className="space-y-1">
+      <div className="flex items-center gap-2">
+        <h2 id="environment-title" className="text-title">{isFil ? "Mga salik sa kapaligiran" : "Environmental predictors"}</h2>
+        <span className="group relative inline-flex">
+          <button
+            type="button"
+            className="inline-flex size-6 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            aria-label={isFil ? "Ipaliwanag ang mga salik sa kapaligiran" : "Explain environmental predictors"}
+            aria-expanded={showHelp}
+            onClick={() => setShowHelp((visible) => !visible)}
+          >
+            <HelpCircle className="size-4" aria-hidden="true" />
+          </button>
+          <span className={`${showHelp ? "block" : "hidden"} pointer-events-none absolute left-0 top-8 z-10 w-72 rounded-md border bg-popover p-3 text-left text-xs font-normal leading-relaxed text-popover-foreground shadow-md group-hover:block group-focus-within:block`} role="tooltip">
+            {isFil ? "Ipinapakita rito ang mga tinatayang halaga ng ulan, temperatura, at lupa na ginagamit sa pagsusuri ng mga pananim. Gabay lamang ang mga ito at hindi kapalit ng pagsusuri sa bukid." : "These are estimated rainfall, temperature, and soil values used to screen the crops. They are guidance only and do not replace field testing."}
+          </span>
+        </span>
+      </div>
+      <p className="text-sm text-muted-foreground">{isFil ? "Mga halaga ng klima at lupa na ginamit ng makina ng rekomendasyon." : "The climate and soil values used by the recommendation engine."}</p>
+    </div>
     <div className="grid gap-3 md:grid-cols-3">
       <Metric label="Estimated annual rainfall" value={`${Math.round(result.climate.rainfall.rainfallTotal)} mm`} detail="12-month NASA POWER average" />
       <Metric label="Mean temperature" value={`${result.climate.temperature.mean.toFixed(1)}°C`} detail="Annual monthly average" />
@@ -104,33 +126,51 @@ function Metric({ label, value, detail }: { label: string; value: string; detail
 
 function CropResult({ assessment }: { assessment: CropAssessment }) {
   const { language } = useLanguage();
-  const cropName = language === "fil" ? (CROP_LABELS_FIL[assessment.crop] ?? assessment.crop) : assessment.crop;
-  if (language === "fil") assessment = { ...assessment, crop: cropName };
+  const isFil = language === "fil";
+  const cropName = isFil ? (CROP_LABELS_FIL[assessment.crop] ?? assessment.crop) : assessment.crop;
+  if (isFil) assessment = { ...assessment, crop: cropName };
+  const warning = isFil ? translateWarning(assessment.warning) : assessment.warning;
   return <Accordion className="rounded-lg border bg-card px-4">
     <AccordionItem value={assessment.crop}>
       <AccordionTrigger className="py-4 hover:no-underline">
-        <span className="min-w-0 flex-1 text-left"><span className="block font-semibold">{assessment.crop}</span><span className="mt-1 block text-sm font-normal text-muted-foreground">{language === "fil" ? "Ulan" : "Rainfall"}: {Math.round(assessment.rainfallTotal)} mm · {language === "fil" ? "Katamtamang temperatura" : "Mean temperature"}: {assessment.meanTemperature.toFixed(1)}°C</span></span>
+        <span className="min-w-0 flex-1 text-left"><span className="block font-semibold">{assessment.crop}</span><span className="mt-1 block text-sm font-normal text-muted-foreground">{isFil ? "Ulan" : "Rainfall"}: {Math.round(assessment.rainfallTotal)} mm · {isFil ? "Katamtamang temperatura" : "Mean temperature"}: {assessment.meanTemperature.toFixed(1)}°C</span></span>
         <span className="shrink-0 pr-2 font-semibold tabular-nums text-primary">{assessment.score}/100</span>
       </AccordionTrigger>
       <AccordionContent className="space-y-4 pb-4">
-        <p className="text-sm"><span className="font-medium">Seasonal warning: </span>{assessment.warning}</p>
+        <p className="text-sm"><span className="font-medium">{isFil ? "Babala sa panahon ng pagtatanim:" : "Seasonal warning:"} </span>{warning}</p>
         <div className="grid gap-3 sm:grid-cols-2">
-          <ScoreFactor label="Rainfall fit" value={assessment.rainfallScore} detail={`${Math.round(assessment.rainfallTotal)} mm estimated · preferred ${assessment.rainfallRange}`} />
-          <ScoreFactor label="Temperature fit" value={assessment.temperatureScore} detail={`${assessment.meanTemperature.toFixed(1)}°C mean · ${assessment.maxTemperature.toFixed(1)}°C maximum`} />
-          <ScoreFactor label="Soil fit" value={assessment.soilScore} detail="Based on sampled pH and derived texture" />
-          <ScoreFactor label="Water fit" value={assessment.waterScore} detail={`${assessment.rule.waterDemand} water-demand crop · ${assessment.rule.name}`} />
+          <ScoreFactor label={isFil ? "Angkop sa ulan" : "Rainfall fit"} value={assessment.rainfallScore} detail={isFil ? `${Math.round(assessment.rainfallTotal)} mm tinatayang · angkop na ${assessment.rainfallRange}` : `${Math.round(assessment.rainfallTotal)} mm estimated · preferred ${assessment.rainfallRange}`} />
+          <ScoreFactor label={isFil ? "Angkop sa temperatura" : "Temperature fit"} value={assessment.temperatureScore} detail={isFil ? `${assessment.meanTemperature.toFixed(1)}°C karaniwan · ${assessment.maxTemperature.toFixed(1)}°C pinakamataas` : `${assessment.meanTemperature.toFixed(1)}°C mean · ${assessment.maxTemperature.toFixed(1)}°C maximum`} />
+          <ScoreFactor label={isFil ? "Angkop sa lupa" : "Soil fit"} value={assessment.soilScore} detail={isFil ? "Batay sa nasuring pH at nabuong tekstura" : "Based on sampled pH and derived texture"} />
+          <ScoreFactor label={isFil ? "Angkop sa tubig" : "Water fit"} value={assessment.waterScore} detail={isFil ? `${assessment.rule.waterDemand} pangangailangan sa tubig · ${assessment.rule.name}` : `${assessment.rule.waterDemand} water-demand crop · ${assessment.rule.name}`} />
         </div>
         <div className="space-y-2 border-t pt-3 text-sm">
-          <p className="font-medium">Why this score?</p>
+          <p className="font-medium">{isFil ? "Bakit ganito ang score?" : "Why this score?"}</p>
           <ul className="list-disc space-y-1 pl-5 text-muted-foreground">
-            {assessment.notes.map((note) => <li key={note}>{note}</li>)}
-            {assessment.soilScore === 60 && <li>Soil data is unavailable at the exact pin, so soil fit is treated as unknown rather than guessed.</li>}
-            {assessment.score < 100 && <li>The score combines multiple factors; a strong result in one factor does not remove limitations in another.</li>}
+            {assessment.notes.map((note) => <li key={note}>{isFil ? translateNote(note) : note}</li>)}
+            {assessment.soilScore === 60 && <li>{isFil ? "Walang datos ng lupa sa eksaktong pin; itinuturing na hindi alam ang angkop sa lupa sa halip na hulaan." : "Soil data is unavailable at the exact pin, so soil fit is treated as unknown rather than guessed."}</li>}
+            {assessment.score < 100 && <li>{isFil ? "Pinagsasama ng score ang maraming salik; hindi inaalis ng magandang resulta sa isang salik ang mga limitasyon sa iba." : "The score combines multiple factors; a strong result in one factor does not remove limitations in another."}</li>}
           </ul>
         </div>
       </AccordionContent>
     </AccordionItem>
   </Accordion>;
+}
+
+function translateWarning(text: string) {
+  return text
+    .replace("No major seasonal rainfall warning detected.", "Walang nakitang malaking babala sa pana-panahong ulan.")
+    .replace("Rainfall may be insufficient during the growing period.", "Maaaring kulang ang ulan sa panahon ng pagtatanim.")
+    .replace("Rainfall may exceed the preferred growing-period range.", "Maaaring lumampas ang ulan sa angkop na saklaw sa panahon ng pagtatanim.")
+    .replace("Seasonal rainfall is adequate, but heat-stress risk should be monitored.", "Sapat ang pana-panahong ulan, ngunit dapat bantayan ang posibilidad ng stress sa init.");
+}
+
+function translateNote(text: string) {
+  return text
+    .replace(/Estimated seasonal rainfall is (.+) for (.+)\./, "Tinatayang pana-panahong ulan: $1 sa loob ng $2.")
+    .replace(/Estimated soil pH (.+) is outside the preferred (.+) range\./, "Ang tinatayang pH ng lupa na $1 ay nasa labas ng angkop na saklaw na $2.")
+    .replace(/Estimated (.+) texture is not the preferred texture for this crop\./, "Ang tinatayang tekstura na $1 ay hindi ang pinakanaaangkop para sa pananim na ito.")
+    .replace(/Maximum temperature reaches (.+); heat-stress risk is possible\./, "Umaabot sa $1 ang pinakamataas na temperatura; posibleng magkaroon ng stress sa init.");
 }
 
 function ScoreFactor({ label, value, detail }: { label: string; value: number; detail: string }) {

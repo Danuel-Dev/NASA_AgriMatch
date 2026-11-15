@@ -39,11 +39,19 @@ export function FarmForm({ step, onStepChange }: { step: 1 | 2; onStepChange: (s
   return (
     <div id="farm-workspace" className="space-y-6">
       {step === 1 ? <section aria-labelledby="farm-workspace-title" className="min-w-0 space-y-4">
-        <div className="space-y-1"><h2 id="farm-workspace-title" className="text-title">{t("farmLocation")}</h2><p className="text-sm text-muted-foreground">{t("locationHelp")}</p></div>
+        <div className="rounded-xl border border-primary/30 bg-accent/50 p-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-primary">{language === "fil" ? "Hakbang 1 · Simulan dito" : "Step 1 · Start here"}</p>
+          <h2 id="farm-workspace-title" className="mt-1 text-title">{t("farmLocation")}</h2>
+          <p className="mt-1 text-sm text-muted-foreground">{t("locationHelp")}</p>
+        </div>
         <FarmLocation />
         <div className="flex justify-end border-t pt-4"><Button type="button" size="lg" disabled={!farm.point || !isSupportedPoint(farm.point)} onClick={() => onStepChange(2)}>{language === "fil" ? "Magpatuloy sa detalye ng bukid" : "Continue to farm details"} <ArrowRight aria-hidden="true" /></Button></div>
       </section> : <section aria-labelledby="farm-setup-title" className="min-w-0 space-y-4">
-        <div className="space-y-1"><h2 id="farm-setup-title" className="text-title">{t("farmConditions")}</h2><p className="text-sm text-muted-foreground">{t("demoPresets")}</p></div>
+        <div className="rounded-xl border border-primary/30 bg-accent/50 p-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-primary">{language === "fil" ? "Hakbang 2 · Sabihin sa amin" : "Step 2 · Tell us about your farm"}</p>
+          <h2 id="farm-setup-title" className="mt-1 text-title">{t("farmConditions")}</h2>
+          <p className="mt-1 text-sm text-muted-foreground">{t("demoPresets")}</p>
+        </div>
         <form onSubmit={compareFarm} className="space-y-4">
           <FarmFields />
           <div className="flex flex-wrap items-center justify-between gap-3"><Button type="button" variant="outline" onClick={() => onStepChange(1)}><ArrowLeft aria-hidden="true" />{language === "fil" ? "Bumalik sa lokasyon" : "Back to location"}</Button><div className="min-w-0 flex-1"><CompareAction ready={ready} submitting={submitting} help={help} /></div></div>

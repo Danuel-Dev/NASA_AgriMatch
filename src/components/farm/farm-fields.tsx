@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Image from "next/image";
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Field,
@@ -82,19 +81,20 @@ export function FarmFields() {
             onValueChange={(value) =>
               setFarm((current) => ({ ...current, irrigation: value }))
             }
-            aria-label="Irrigation"
+            aria-label={language === "fil" ? "Patubig" : "Irrigation"}
             aria-describedby="irrigation-help"
-            className="flex flex-wrap gap-x-6"
+            className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap"
           >
             {IRRIGATION_OPTIONS.map((option) => (
-              <Field key={option} orientation="horizontal" className="w-auto">
+              <Field key={option} orientation="horizontal" className={`w-full rounded-xl border px-3 transition-colors sm:w-auto ${farm.irrigation === option ? "border-primary bg-accent text-primary" : "border-border bg-card text-muted-foreground hover:border-primary hover:bg-accent"}`}>
                 <RadioGroupItem
                   id={`irrigation-${option.toLowerCase()}`}
                   value={option}
+                  className="sr-only"
                 />
                 <FieldLabel
                   htmlFor={`irrigation-${option.toLowerCase()}`}
-                  className="min-h-12 cursor-pointer pr-3"
+                  className="min-h-12 w-full cursor-pointer justify-center px-0 text-base font-semibold sm:min-w-24"
                   >
                     <span className="flex items-center gap-2"><IrrigationIcon option={option} />{language === "fil" ? IRRIGATION_LABELS_FIL[option] : option}</span>
                 </FieldLabel>
@@ -162,20 +162,21 @@ export function FarmFields() {
       </div>
       <FieldSet className="gap-2">
         <FieldLegend variant="label" className="mb-0 font-semibold">{t("priorities")}</FieldLegend>
-        <FieldDescription id="priorities-help" className="sr-only">
-          Choose one or more priorities.
+        <FieldDescription id="priorities-help" className="text-sm text-muted-foreground">
+          {language === "fil" ? "Pumili ng isa o higit pang prayoridad para sa paghahambing." : "Choose one or more priorities for the comparison."}
         </FieldDescription>
         <div
-          className="flex flex-wrap gap-x-4 gap-y-1"
+          className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3"
           role="group"
-          aria-label="Farm priorities"
+          aria-label={language === "fil" ? "Mga prayoridad ng bukid" : "Farm priorities"}
           aria-describedby="priorities-help"
         >
           {PRIORITY_OPTIONS.map((priority, index) => (
-            <Field key={priority} orientation="horizontal" className="w-auto">
+            <Field key={priority} orientation="horizontal" className={`min-h-16 rounded-xl border px-4 transition-colors ${farm.priorities.includes(priority) ? "border-2 border-primary bg-accent text-primary" : "border-border bg-card text-muted-foreground hover:border-primary hover:bg-accent"}`}>
               <Checkbox
                 id={`priority-${index}`}
                 checked={farm.priorities.includes(priority)}
+                className="sr-only"
                 onCheckedChange={() =>
                   setFarm((current) => ({
                     ...current,
@@ -185,7 +186,7 @@ export function FarmFields() {
               />
               <FieldLabel
                 htmlFor={`priority-${index}`}
-                className="min-h-11 cursor-pointer"
+                className="min-h-16 w-full cursor-pointer px-0 text-base font-semibold"
               >
                 <span className="flex items-center gap-2"><PriorityIcon priority={priority} />{language === "fil" ? PRIORITY_LABELS_FIL[priority] : priority}</span>
               </FieldLabel>
@@ -193,17 +194,6 @@ export function FarmFields() {
           ))}
         </div>
       </FieldSet>
-      <Accordion>
-        <AccordionItem value="conditions-help">
-          <AccordionTrigger className="min-h-11 items-center">{language === "fil" ? "Tulong sa lupa at panahon" : "Help with soil and season"}</AccordionTrigger>
-          <AccordionContent>
-            <div className="space-y-3 text-sm text-muted-foreground">
-              <p><strong className="font-medium text-foreground">{t("soilTexture")}:</strong> {t("soilHelp")}</p>
-              <p><strong className="font-medium text-foreground">{t("season")}:</strong> {t("seasonHelp")}</p>
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
     </FieldGroup>
   );
 }
