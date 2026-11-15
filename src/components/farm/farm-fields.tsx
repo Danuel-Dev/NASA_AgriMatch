@@ -202,18 +202,14 @@ export function FarmFields() {
 
 function FieldHelp({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <Accordion className="relative w-auto">
-      <AccordionItem value={label} className="border-0">
-        <AccordionTrigger
-          aria-label={label}
-          className="size-7 items-center justify-center rounded-full p-0 text-muted-foreground hover:bg-accent hover:no-underline [&>[data-slot=accordion-trigger-icon]]:hidden"
-        >
-          <HelpCircle className="size-4" aria-hidden="true" />
-        </AccordionTrigger>
-        <AccordionContent className="absolute z-10 mt-1 w-64 rounded-lg border bg-popover p-3 text-xs font-normal text-popover-foreground shadow-sm">
-          {children}
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
+    <span className="group relative inline-flex" tabIndex={0} aria-label={label}>
+      <HelpCircle className="size-4 text-muted-foreground" aria-hidden="true" />
+      <span
+        role="tooltip"
+        className="pointer-events-none invisible absolute left-0 top-full z-20 mt-2 w-64 rounded-lg border bg-popover p-3 text-xs font-normal text-popover-foreground opacity-0 shadow-sm transition-opacity group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100"
+      >
+        {children}
+      </span>
+    </span>
   );
 }
