@@ -5,7 +5,10 @@ export const ALBAY_BOUNDS: [[number, number], [number, number]] = [
   [13.65, 124.15],
 ];
 
-export const CROP_OPTIONS = ["Rice", "Corn", "Coconut", "Abaca", "Vegetables"];
+export const CROP_OPTIONS = [
+  "Rice", "Corn", "Coconut", "Abaca", "Mung bean", "Sweet potato",
+  "Eggplant", "Yardlong bean", "Peanut",
+];
 export const IRRIGATION_OPTIONS = ["Adequate", "Limited"];
 export const SOIL_OPTIONS = ["Clay loam", "Sandy loam", "Clay", "Loam"];
 export const SEASON_OPTIONS = ["Dry season", "Wet season", "Transition season"];
@@ -13,6 +16,9 @@ export const PRIORITY_OPTIONS = [
   "Conserve water",
   "Improve soil health",
   "Climate suitability",
+  "Reduce heat stress",
+  "Support crop diversity",
+  "Reduce input needs",
 ];
 
 export type FarmDraft = {

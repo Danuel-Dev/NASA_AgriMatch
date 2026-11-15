@@ -30,7 +30,7 @@ export function FarmForm() {
       ? "Select at least one current crop to continue."
       : !farm.priorities.length
         ? "Choose at least one priority to continue."
-        : "Ready to compare. Scores are fixed demo examples.";
+        : "Ready to compare. Results are screening estimates from the supplied datasets.";
 
   return (
     <div id="farm-workspace" className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_25rem]">

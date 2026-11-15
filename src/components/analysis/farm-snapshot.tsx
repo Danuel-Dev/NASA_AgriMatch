@@ -4,11 +4,11 @@ import Link from "next/link";
 import { MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { FarmMap } from "@/components/farm/farm-map";
 import { useFarm } from "@/components/farm/farm-provider";
 import { formatCoordinates } from "@/lib/farm";
+import type { RecommendationResult } from "@/lib/recommendation-engine";
 
 export function FarmSnapshot() {
   const { farm } = useFarm();
@@ -20,50 +20,13 @@ export function FarmSnapshot() {
           <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-2">
             <div className="min-w-0 space-y-1">
               <h2 className="text-base font-semibold">Selected farm</h2>
-              <p className="wrap-anywhere text-sm">{farm.locationName}</p>
+              <p className="wrap-anywhere font-mono text-sm tabular-nums">{formatCoordinates(farm.point)}</p>
             </div>
-            <p className="wrap-anywhere font-mono text-sm tabular-nums text-muted-foreground">{formatCoordinates(farm.point)}</p>
+            <p className="wrap-anywhere text-sm text-muted-foreground">Albay pilot area</p>
           </div>
-          <Accordion>
-            <AccordionItem value="farm-details">
-              <AccordionTrigger className="min-h-11 items-center">Farm conditions and priorities</AccordionTrigger>
-              <AccordionContent>
-                <div className="grid items-start gap-5 pt-2 lg:grid-cols-3 lg:gap-8">
-                  <div className="space-y-3">
-                    <h3 className="text-base font-semibold">Farm conditions</h3>
-                    <dl className="space-y-2 text-sm">
-                      {[["Soil texture", farm.soil], ["Irrigation", farm.irrigation], ["Season", farm.season]].map(([label, value]) => (
-                        <div key={label} className="flex flex-wrap justify-between gap-x-4 gap-y-1">
-                          <dt className="text-muted-foreground">{label}</dt>
-                          <dd className="font-medium">{value}</dd>
-                        </div>
-                      ))}
-                    </dl>
-                  </div>
-                  <div className="space-y-3">
-                    <div className="space-y-2">
-                      <h3 className="text-base font-semibold">Current crops</h3>
-                      <div className="flex flex-wrap gap-2" aria-label="Selected crops">
-                        {farm.crops.map((crop) => <Badge key={crop} variant="crop">{crop}</Badge>)}
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <h3 className="text-base font-semibold">Your priorities</h3>
-                      <div className="flex flex-wrap gap-2">
-                        {farm.priorities.map((priority) => <Badge key={priority} variant="secondary">{priority}</Badge>)}
-                      </div>
-                    </div>
-                  </div>
-                  <Accordion>
-                    <AccordionItem value="farm-map">
-                      <AccordionTrigger className="min-h-11 items-center">View farm map</AccordionTrigger>
-                      <AccordionContent><FarmMap point={farm.point} className="h-56 lg:h-56" /></AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+          <div className="pt-2">
+            <FarmMap point={farm.point} className="h-64 lg:h-80" />
+          </div>
         </div>
       ) : (
         <Empty className="items-start gap-3 p-0 text-left md:p-0">
@@ -83,3 +46,24 @@ export function FarmSnapshot() {
   );
 }
 
+export function FarmConditions({ result }: { result?: RecommendationResult | null }) {
+  const { farm } = useFarm();
+  return <section aria-labelledby="farm-conditions-title" className="space-y-4 border-y py-5">
+    <h2 id="farm-conditions-title" className="text-title">Farm conditions and priorities</h2>
+    <div className="grid items-start gap-5 lg:grid-cols-2 lg:gap-8">
+      <div className="space-y-3">
+        <h3 className="text-base font-semibold">Farm conditions</h3>
+        <dl className="space-y-2 text-sm">
+          {[["Soil texture", farm.soil], ["Irrigation", farm.irrigation], ["Season", farm.season]].map(([label, value]) => <div key={label} className="flex flex-wrap justify-between gap-x-4 gap-y-1"><dt className="text-muted-foreground">{label}</dt><dd className="font-medium">{value}</dd></div>)}
+          {result?.soil.ph != null && <div className="flex flex-wrap justify-between gap-x-4 gap-y-1"><dt className="text-muted-foreground">Sampled soil pH</dt><dd className="font-medium">{result.soil.ph.toFixed(1)}</dd></div>}
+          {result?.soil.texture && <div className="flex flex-wrap justify-between gap-x-4 gap-y-1"><dt className="text-muted-foreground">Derived texture</dt><dd className="font-medium">{result.soil.texture}</dd></div>}
+          {result && result.soil.ph == null && <div className="flex flex-wrap justify-between gap-x-4 gap-y-1"><dt className="text-muted-foreground">Soil estimate</dt><dd className="font-medium">NoData at exact pin</dd></div>}
+        </dl>
+      </div>
+      <div className="space-y-4">
+        <div className="space-y-2"><h3 className="text-base font-semibold">Current crops</h3><div className="flex flex-wrap gap-2" aria-label="Selected crops">{farm.crops.map((crop) => <Badge key={crop} variant="crop">{crop}</Badge>)}</div></div>
+        <div className="space-y-2"><h3 className="text-base font-semibold">Your priorities</h3><div className="flex flex-wrap gap-2">{farm.priorities.map((priority) => <Badge key={priority} variant="secondary">{priority}</Badge>)}</div></div>
+      </div>
+    </div>
+  </section>;
+}

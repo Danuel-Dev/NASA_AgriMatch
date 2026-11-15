@@ -8,6 +8,7 @@ export type Rotation = {
   explanation: string;
   strengths: string[];
   tradeoff: string;
+  priorityMetrics?: { label: string; value: number; tone: "blue" | "green" | "pink" | "amber" }[];
 };
 
 export const ROTATIONS: Rotation[] = [

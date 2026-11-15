@@ -5,15 +5,18 @@ import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import type { Rotation } from "@/lib/rotations";
 
-export function RotationOption({ rotation }: { rotation: Rotation }) {
+export function RotationOption({ rotation, recommended = false }: { rotation: Rotation; recommended?: boolean }) {
   return (
-    <article className="flex h-full min-w-0 flex-col gap-4">
+    <article className={`flex h-full min-w-0 flex-col gap-4 rounded-lg border p-4 ${recommended ? "border-2 border-primary bg-accent/50 shadow-md" : "border-transparent"}`}>
       <Separator />
       <div className="space-y-3">
-        <Badge variant={`rotation-${rotation.tone}`}>
-          <Sprout aria-hidden="true" />
-          {rotation.id.replace("option-", "Option ")}
-        </Badge>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <Badge variant={`rotation-${rotation.tone}`}>
+            <Sprout aria-hidden="true" />
+            {rotation.id.replace("option-", "Option ")}
+          </Badge>
+          {recommended && <Badge variant="success">Highest screening score</Badge>}
+        </div>
         <h3 className="text-xl font-semibold">{rotation.name}</h3>
         <p className="text-sm text-muted-foreground">
           {rotation.crops.join(" → ")}
@@ -25,7 +28,7 @@ export function RotationOption({ rotation }: { rotation: Rotation }) {
             {rotation.score}
           </span>
           <span className="text-sm text-muted-foreground">
-            /100 demo fit score
+            /100 screening fit score
           </span>
         </p>
         <p className="text-sm text-muted-foreground">{rotation.summary}</p>
