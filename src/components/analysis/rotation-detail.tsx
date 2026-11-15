@@ -13,7 +13,7 @@ import type { RecommendationResult } from "@/lib/recommendation-engine";
 import { useLanguage } from "@/components/language-provider";
 import { CROP_LABELS_FIL } from "@/lib/farm";
 
-const cropCodes: Record<string, string> = { Rice: "1F33E", Corn: "1F33D", "Mung bean": "1FAD8", "Sweet potato": "1F360", Eggplant: "1F346", "Yardlong bean": "1FADB", Peanut: "1F95C" };
+const cropImages: Record<string, string> = { Rice: "/crops/rice.avif", Corn: "/crops/mais.jpg", "Mung bean": "/crops/monggo.jpg", "Sweet potato": "/crops/kamote.jpg", Eggplant: "/crops/talong.jpg", "Yardlong bean": "/crops/sitaw.avif", Peanut: "/crops/mani.jpg" };
 
 export function RotationDetail({ rotation: initialRotation }: { rotation: Rotation }) {
   const { farm } = useFarm();
@@ -71,9 +71,7 @@ export function RotationDetail({ rotation: initialRotation }: { rotation: Rotati
             {localizedCrops.map((crop, index) => (
               <li key={crop} className="contents">
                 <div className="min-w-0 text-center">
-                  <div className="flex h-16 items-center justify-center rounded-2xl bg-accent sm:h-20">
-                    <CropIcon crop={rotation.crops[index]} />
-                  </div>
+                  <CropIcon crop={rotation.crops[index]} />
                   <Badge variant="secondary" className="mt-2 text-[11px]">{isFil ? "Hakbang" : "Step"} {index + 1}</Badge>
                   <p className="mt-1 truncate font-semibold">{crop}</p>
                 </div>
@@ -122,7 +120,7 @@ export function RotationDetail({ rotation: initialRotation }: { rotation: Rotati
 }
 
 function CropIcon({ crop }: { crop: string }) {
-  return <Image src={`https://cdn.jsdelivr.net/gh/hfg-gmuend/openmoji@master/color/svg/${cropCodes[crop] ?? "1F331"}.svg`} alt="" aria-hidden="true" width={48} height={48} className="size-10 object-contain sm:size-12" unoptimized />;
+  return <span className="relative block h-16 w-full overflow-hidden rounded-2xl bg-accent sm:h-20"><Image src={cropImages[crop] ?? cropImages.Rice} alt={`${crop} crop`} fill sizes="(max-width: 1024px) 100vw, 40vw" className="object-cover" /></span>;
 }
 
 function translateStrength(text: string) {

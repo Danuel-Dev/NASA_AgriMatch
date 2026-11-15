@@ -40,17 +40,17 @@ export function FarmForm({ step, onStepChange }: { step: 1 | 2; onStepChange: (s
     <div id="farm-workspace" className="space-y-6">
       {step === 1 ? <section aria-labelledby="farm-workspace-title" className="min-w-0 space-y-4">
         <div className="rounded-xl border border-primary/30 bg-accent/50 p-4">
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-primary">{language === "fil" ? "Hakbang 1 · Simulan dito" : "Step 1 · Start here"}</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-primary">{language === "fil" ? "Hakbang 1 · Lokasyon" : "Step 1 · Location"}</p>
           <h2 id="farm-workspace-title" className="mt-1 text-title">{t("farmLocation")}</h2>
-          <p className="mt-1 text-sm text-muted-foreground">{t("locationHelp")}</p>
+          <p className="mt-1 text-sm text-muted-foreground">{language === "fil" ? "Piliin ang lokasyon ng bukid." : "Choose your farm location."}</p>
         </div>
         <FarmLocation />
         <div className="flex justify-end border-t pt-4"><Button type="button" size="lg" disabled={!farm.point || !isSupportedPoint(farm.point)} onClick={() => onStepChange(2)}>{language === "fil" ? "Magpatuloy sa detalye ng bukid" : "Continue to farm details"} <ArrowRight aria-hidden="true" /></Button></div>
       </section> : <section aria-labelledby="farm-setup-title" className="min-w-0 space-y-4">
         <div className="rounded-xl border border-primary/30 bg-accent/50 p-4">
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-primary">{language === "fil" ? "Hakbang 2 · Sabihin sa amin" : "Step 2 · Tell us about your farm"}</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-primary">{language === "fil" ? "Hakbang 2 · Detalye" : "Step 2 · Farm details"}</p>
           <h2 id="farm-setup-title" className="mt-1 text-title">{t("farmConditions")}</h2>
-          <p className="mt-1 text-sm text-muted-foreground">{t("demoPresets")}</p>
+          <p className="mt-1 text-sm text-muted-foreground">{language === "fil" ? "Piliin ang pananim at kondisyon ng bukid." : "Choose crops and farm conditions."}</p>
         </div>
         <form onSubmit={compareFarm} className="space-y-4">
           <FarmFields />

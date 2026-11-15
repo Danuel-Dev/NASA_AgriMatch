@@ -40,7 +40,7 @@ export function AnalysisView() {
         <div className="space-y-2">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">{language === "fil" ? "Magkatabing paghahambing" : "Side-by-side"}</p>
           <h1 className="text-headline">{language === "fil" ? "Ihambing ang iyong mga rotation" : "Compare your rotations"}</h1>
-          <p className="max-w-prose text-muted-foreground">{language === "fil" ? "Bawat landas ay may tatlong pananim na itinatanim nang magkakasunod, hindi sabay-sabay." : "Each path contains three crops planted one after another, not simultaneously."}</p>
+          <p className="max-w-prose text-muted-foreground">{language === "fil" ? "Ihambing ang tatlong rotation." : "Compare three crop rotations."}</p>
         </div>
         <Link href="/#farm-workspace" className={buttonVariants({ variant: "outline" })}>
           <ArrowLeft aria-hidden="true" />{t("editFarm")}

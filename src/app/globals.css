@@ -144,6 +144,15 @@
   animation: farm-loading-progress 1s ease-out forwards;
 }
 
+.selected-rotation-preview .font-semibold {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  background: rgb(0 0 0 / 0.6);
+  padding: 0 0.5rem 0.5rem;
+  color: white;
+}
+
 /* One measured space keeps the mobile action from covering the final field. */
 @media (width < 64rem) {
   .compare-action-space {
