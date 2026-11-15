@@ -19,6 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { HelpCircle } from "lucide-react";
 import {
   CROP_OPTIONS,
   IRRIGATION_OPTIONS,
@@ -91,7 +92,12 @@ export function FarmFields() {
         </FieldSet>
       <div className="grid gap-4 @sm/field-group:grid-cols-2">
         <Field>
-          <FieldLabel htmlFor="soil">Soil texture</FieldLabel>
+          <div className="flex items-center gap-1">
+            <FieldLabel htmlFor="soil">Soil texture</FieldLabel>
+            <FieldHelp label="Soil texture help">
+              Use the texture from your farm records or soil assessment. If unsure, ask your local agricultural office before relying on a recommendation.
+            </FieldHelp>
+          </div>
           <Select
             name="soil"
             value={farm.soil}
@@ -116,7 +122,12 @@ export function FarmFields() {
           </Select>
         </Field>
         <Field>
-          <FieldLabel htmlFor="season">Season</FieldLabel>
+          <div className="flex items-center gap-1">
+            <FieldLabel htmlFor="season">Season</FieldLabel>
+            <FieldHelp label="Season help">
+              Choose the growing period you are planning for. The app uses this selection to screen seasonal rainfall and temperature fit.
+            </FieldHelp>
+          </div>
           <Select
             name="season"
             value={farm.season}
@@ -186,5 +197,23 @@ export function FarmFields() {
         </AccordionItem>
       </Accordion>
     </FieldGroup>
+  );
+}
+
+function FieldHelp({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <Accordion className="relative w-auto">
+      <AccordionItem value={label} className="border-0">
+        <AccordionTrigger
+          aria-label={label}
+          className="size-7 items-center justify-center rounded-full p-0 text-muted-foreground hover:bg-accent hover:no-underline [&>svg]:hidden"
+        >
+          <HelpCircle className="size-4" aria-hidden="true" />
+        </AccordionTrigger>
+        <AccordionContent className="absolute z-10 mt-1 w-64 rounded-lg border bg-popover p-3 text-xs font-normal text-popover-foreground shadow-sm">
+          {children}
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 }
