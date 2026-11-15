@@ -6,7 +6,7 @@ export const ALBAY_BOUNDS: [[number, number], [number, number]] = [
 ];
 
 export const CROP_OPTIONS = [
-  "Rice", "Corn", "Coconut", "Abaca", "Mung bean", "Sweet potato",
+  "Rice", "Corn", "Mung bean", "Sweet potato",
   "Eggplant", "Yardlong bean", "Peanut",
 ];
 export const IRRIGATION_OPTIONS = ["Adequate", "Limited"];

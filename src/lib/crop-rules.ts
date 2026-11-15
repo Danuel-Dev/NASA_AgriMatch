@@ -25,18 +25,6 @@ export const CROP_RULES: Record<string, CropRule> = {
     temperatureC: { min: 18, idealMin: 21, idealMax: 30, max: 35 }, heatStressC: 35,
     soilPh: { min: 5.5, max: 7.5 }, textures: ["loam", "clay loam", "sandy loam"], waterDemand: "medium", soilHealth: 1,
   },
-  Coconut: {
-    name: "Coconut (Cocos nucifera)", growingMonths: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-    rainfallMm: { min: 1200, idealMin: 1500, idealMax: 2500, max: 3500 },
-    temperatureC: { min: 20, idealMin: 24, idealMax: 30, max: 34 }, heatStressC: 35,
-    soilPh: { min: 5.0, max: 8.0 }, textures: ["sandy loam", "loam", "clay loam"], waterDemand: "medium", soilHealth: 1,
-  },
-  Abaca: {
-    name: "Abaca (Musa textilis)", growingMonths: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-    rainfallMm: { min: 1500, idealMin: 2000, idealMax: 3000, max: 4000 },
-    temperatureC: { min: 20, idealMin: 24, idealMax: 29, max: 33 }, heatStressC: 34,
-    soilPh: { min: 5.0, max: 7.5 }, textures: ["loam", "clay loam"], waterDemand: "medium", soilHealth: 2,
-  },
   "Mung bean": {
     name: "Mung bean (Vigna radiata)", growingMonths: [2, 3, 4, 5],
     rainfallMm: { min: 250, idealMin: 300, idealMax: 500, max: 750 },

@@ -50,7 +50,7 @@ export const ROTATIONS: Rotation[] = [
   {
     id: "option-3",
     name: "Climate Fit Rotation",
-    crops: ["Coconut", "Abaca", "Vegetables"],
+    crops: ["Mung bean", "Sweet potato", "Vegetables"],
     score: 75,
     tone: "pink",
     summary:
