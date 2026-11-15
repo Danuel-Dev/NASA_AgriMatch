@@ -51,8 +51,8 @@ function rotateMonths(rule: CropRule, season: string) {
   return preferred.length ? preferred : rule.growingMonths;
 }
 
-export function assessCrop(crop: string, farm: FarmDraft, climate: ClimateData, soil: SoilSample): CropAssessment {
-  const rule = CROP_RULES[crop] ?? CROP_RULES.Rice;
+export function assessCrop(crop: string, farm: FarmDraft, climate: ClimateData, soil: SoilSample, rules: Record<string, CropRule> = CROP_RULES): CropAssessment {
+  const rule = rules[crop] ?? rules.Rice;
   const months = rotateMonths(rule, farm.season);
   const rainfallTotal = months.reduce((sum, month) => sum + (climate.rainfall.months[month - 1] ?? 0), 0);
   const meanTemperature = average(months.map((month) => climate.temperature.months[month - 1] ?? climate.temperature.mean));
@@ -87,6 +87,7 @@ export function buildRotations(assessments: CropAssessment[], farm: FarmDraft): 
   const byWater = [...assessments].sort((a, b) => (a.rule.waterDemand === "low" ? 0 : a.rule.waterDemand === "medium" ? 1 : 2) - (b.rule.waterDemand === "low" ? 0 : b.rule.waterDemand === "medium" ? 1 : 2));
   const bySoil = [...assessments].sort((a, b) => b.rule.soilHealth - a.rule.soilHealth);
   const diverse = ["low", "medium", "high"].map((demand) => sorted.find((item) => item.rule.waterDemand === demand)).filter((item): item is CropAssessment => !!item);
+  const documentedNext = (previous: string, candidates: CropAssessment[]) => candidates.filter((item) => item.rule.documentedPreviousCrops.includes(previous));
   const current = farm.currentRotation.map((crop) => assessments.find((item) => item.crop === crop)).filter((item): item is CropAssessment => !!item);
   const cropReason = (item: CropAssessment) => {
     const reasons: string[] = [];
@@ -105,7 +106,8 @@ export function buildRotations(assessments: CropAssessment[], farm: FarmDraft): 
     const sequence = list.slice(0, 3);
     const uniqueCrops = new Set(sequence.map((item) => item.crop)).size;
     const legumeCount = sequence.filter((item) => item.rule.soilHealth >= 4).length;
-    const transitionScore = clamp(55 + (uniqueCrops - 1) * 12 + legumeCount * 10);
+    const documentedTransitions = sequence.slice(1).filter((item, index) => item.rule.documentedPreviousCrops.includes(sequence[index].crop)).length;
+    const transitionScore = clamp(55 + (uniqueCrops - 1) * 12 + legumeCount * 10 + documentedTransitions * 8);
     const sequenceScore = clamp(Math.round(average(sequence.map((item) => item.score)) * 0.78 + transitionScore * 0.22 + priorityWeight));
     return { id, name, crops: sequence.map((item) => item.crop), score: sequenceScore, summary, explanation, strengths: sequence.map((item) => `${item.crop} (${item.score}/100): ${cropReason(item)}.`), tradeoff, tone,
     priorityMetrics: [
@@ -116,14 +118,18 @@ export function buildRotations(assessments: CropAssessment[], farm: FarmDraft): 
     ],
     };
   };
+  const waterList = waterFirst ? byWater : sorted;
+  const soilList = soilFirst ? bySoil : diversityFirst ? diverse : sorted;
+  const alternativeA = waterList.length ? [waterList[0], ...documentedNext(waterList[0].crop, waterList).filter((item) => item.crop !== waterList[0].crop), ...waterList].filter((item, index, items) => items.findIndex((candidate) => candidate.crop === item.crop) === index) : waterList;
+  const alternativeB = soilList.length ? [soilList[0], ...documentedNext(soilList[0].crop, soilList).filter((item) => item.crop !== soilList[0].crop), ...soilList].filter((item, index, items) => items.findIndex((candidate) => candidate.crop === item.crop) === index) : soilList;
   return [
     rotation("option-1", "Rotation option 1", current.length ? current : sorted, "Evaluates the selected crops against the sampled conditions.", "This is the current crop mix used as a baseline for comparison.", "Keeping the current mix may leave some climate or water risks unchanged.", "blue"),
-    rotation("option-2", "Rotation option 2", waterFirst ? byWater : sorted, "An alternative sequence using the sampled climate, soil, and water conditions.", "This alternative places more emphasis on crops with lower water demand when appropriate.", "A different crop mix may involve different management and market timing.", "green"),
-    rotation("option-3", "Rotation option 3", soilFirst ? bySoil : diversityFirst ? diverse : sorted, "An alternative sequence evaluated against the same farm conditions.", "This alternative considers soil-health contribution and crop diversity among the screening factors.", "Soil-health benefits are longer-term and are not measured as a guaranteed yield increase.", "pink"),
+    rotation("option-2", "Rotation option 2", alternativeA, "An alternative sequence using the sampled climate, soil, water, and documented rotation evidence.", "This alternative balances the selected priorities with documented predecessor relationships where available.", "A different crop mix may involve different management and market timing.", "green"),
+    rotation("option-3", "Rotation option 3", alternativeB, "An alternative sequence evaluated against the same farm conditions and crop evidence.", "This alternative considers soil-health contribution, crop diversity, and documented rotation relationships.", "Rotation evidence is provisional and requires local agronomic validation.", "pink"),
   ];
 }
 
-export function recommend(farm: FarmDraft, climate: ClimateData, soil: SoilSample): RecommendationResult {
-  const crops = Object.keys(CROP_RULES).map((crop) => assessCrop(crop, farm, climate, soil));
+export function recommend(farm: FarmDraft, climate: ClimateData, soil: SoilSample, rules: Record<string, CropRule> = CROP_RULES): RecommendationResult {
+  const crops = Object.keys(rules).map((crop) => assessCrop(crop, farm, climate, soil, rules));
   return { location: farm.point as FarmPoint, soil, climate, crops, rotations: buildRotations(crops, farm), disclaimer: "These are screening estimates based on modeled baseline climate and soil data. They are not guaranteed yields and do not replace field soil testing or local agronomic advice." };
 }

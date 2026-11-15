@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Check, Info, TriangleAlert } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -11,6 +12,8 @@ import { useFarm } from "@/components/farm/farm-provider";
 import type { RecommendationResult } from "@/lib/recommendation-engine";
 import { useLanguage } from "@/components/language-provider";
 import { CROP_LABELS_FIL } from "@/lib/farm";
+
+const cropCodes: Record<string, string> = { Rice: "1F33E", Corn: "1F33D", "Mung bean": "1FAD8", "Sweet potato": "1F360", Eggplant: "1F346", "Yardlong bean": "1FADB", Peanut: "1F95C" };
 
 export function RotationDetail({ rotation: initialRotation }: { rotation: Rotation }) {
   const { farm } = useFarm();
@@ -64,14 +67,17 @@ export function RotationDetail({ rotation: initialRotation }: { rotation: Rotati
             <h2 id="sequence-title" className="text-title">{language === "fil" ? "Pagkakasunod-sunod ng pananim" : "Crop sequence"}</h2>
             <p className="text-sm text-muted-foreground">{language === "fil" ? "Ang ayos ng mga pananim sa tatlong panahon ng pagtatanim sa rotation na ito." : "The order of crops across three growing periods in this screening rotation."}</p>
           </div>
-          <ol className="flex flex-wrap items-center gap-4">
+          <ol className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto_minmax(0,1fr)] items-start gap-2">
             {localizedCrops.map((crop, index) => (
-              <li key={crop} className="flex items-center gap-4">
-                <div className="space-y-2">
-                  <Badge variant="secondary">{isFil ? "Hakbang" : "Step"} {index + 1}</Badge>
-                  <p className="font-semibold">{crop}</p>
+              <li key={crop} className="contents">
+                <div className="min-w-0 text-center">
+                  <div className="flex h-16 items-center justify-center rounded-2xl bg-accent sm:h-20">
+                    <CropIcon crop={rotation.crops[index]} />
+                  </div>
+                  <Badge variant="secondary" className="mt-2 text-[11px]">{isFil ? "Hakbang" : "Step"} {index + 1}</Badge>
+                  <p className="mt-1 truncate font-semibold">{crop}</p>
                 </div>
-                {index < rotation.crops.length - 1 && <ArrowRight className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />}
+                {index < rotation.crops.length - 1 && <ArrowRight className="mt-8 size-4 shrink-0 text-primary" aria-hidden="true" />}
               </li>
             ))}
           </ol>
@@ -113,6 +119,10 @@ export function RotationDetail({ rotation: initialRotation }: { rotation: Rotati
       </Alert>
     </div>
   );
+}
+
+function CropIcon({ crop }: { crop: string }) {
+  return <Image src={`https://cdn.jsdelivr.net/gh/hfg-gmuend/openmoji@master/color/svg/${cropCodes[crop] ?? "1F331"}.svg`} alt="" aria-hidden="true" width={48} height={48} className="size-10 object-contain sm:size-12" unoptimized />;
 }
 
 function translateStrength(text: string) {
