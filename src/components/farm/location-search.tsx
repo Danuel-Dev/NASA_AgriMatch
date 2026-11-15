@@ -9,8 +9,10 @@ import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "
 import { Spinner } from "@/components/ui/spinner";
 import { searchLocations, type LocationResult } from "@/lib/location-search";
 import type { FarmPoint } from "@/lib/farm";
+import { useLanguage } from "@/components/language-provider";
 
 export function LocationSearch({ onSelect }: { onSelect: (point: FarmPoint, name: string) => void }) {
+  const { language } = useLanguage();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<LocationResult[]>([]);
   const [selected, setSelected] = useState<LocationResult | null>(null);
@@ -40,16 +42,16 @@ export function LocationSearch({ onSelect }: { onSelect: (point: FarmPoint, name
 
   return <div className="grid min-w-0 gap-3 sm:grid-cols-2">
     <Field>
-      <FieldLabel htmlFor="location-results">Choose farm location</FieldLabel>
+      <FieldLabel htmlFor="location-results">{language === "fil" ? "Pumili ng lokasyon ng bukid" : "Choose farm location"}</FieldLabel>
       <Combobox<LocationResult> modal={false} items={results} filter={null} value={selected} inputValue={selected?.label ?? ""} open={open} onOpenChange={setOpen} itemToStringLabel={(item) => item.label} isItemEqualToValue={(item, value) => item.id === value.id} onValueChange={(value) => { setSelected(value); if (value) { onSelect(value.point, value.label); setOpen(false); } }}>
-        <ComboboxInput id="location-results" readOnly placeholder="Choose a place" className="w-full" />
-        <ComboboxContent><ComboboxEmpty>{searching ? "Searching Albay..." : searched ? "No places found. Try another name." : "Search for a place to see suggestions."}</ComboboxEmpty><ComboboxList>{(result: LocationResult) => <ComboboxItem key={result.id} value={result}><div className="min-w-0 space-y-1"><p className="font-semibold">{result.label}</p><p className="text-sm text-muted-foreground">{result.description}</p></div></ComboboxItem>}</ComboboxList></ComboboxContent>
+        <ComboboxInput id="location-results" readOnly placeholder={language === "fil" ? "Pumili ng lugar" : "Choose a place"} className="w-full" />
+        <ComboboxContent><ComboboxEmpty>{searching ? (language === "fil" ? "Hinahanap sa Albay..." : "Searching Albay...") : searched ? (language === "fil" ? "Walang nahanap. Subukan ang ibang pangalan." : "No places found. Try another name.") : (language === "fil" ? "Maghanap ng lugar upang makita ang mga mungkahi." : "Search for a place to see suggestions.")}</ComboboxEmpty><ComboboxList>{(result: LocationResult) => <ComboboxItem key={result.id} value={result}><div className="min-w-0 space-y-1"><p className="font-semibold">{result.label}</p><p className="text-sm text-muted-foreground">{result.description}</p></div></ComboboxItem>}</ComboboxList></ComboboxContent>
       </Combobox>
     </Field>
     <Field>
-      <FieldLabel htmlFor="location-search">Search in Albay</FieldLabel>
-      <form onSubmit={handleSearch}><InputGroup><InputGroupInput id="location-search" type="search" placeholder="Search for a place" value={query} onChange={(event) => setQuery(event.target.value)} aria-busy={searching} /><InputGroupAddon align="inline-end"><InputGroupButton type="submit" size="icon-sm" aria-label="Search" disabled={!query.trim() || searching}>{searching ? <Spinner aria-hidden="true" /> : <Search aria-hidden="true" />}</InputGroupButton></InputGroupAddon></InputGroup></form>
+      <FieldLabel htmlFor="location-search">{language === "fil" ? "Maghanap sa Albay" : "Search in Albay"}</FieldLabel>
+      <form onSubmit={handleSearch}><InputGroup><InputGroupInput id="location-search" type="search" placeholder={language === "fil" ? "Maghanap ng lugar" : "Search for a place"} value={query} onChange={(event) => setQuery(event.target.value)} aria-busy={searching} /><InputGroupAddon align="inline-end"><InputGroupButton type="submit" size="icon-sm" aria-label={language === "fil" ? "Maghanap" : "Search"} disabled={!query.trim() || searching}>{searching ? <Spinner aria-hidden="true" /> : <Search aria-hidden="true" />}</InputGroupButton></InputGroupAddon></InputGroup></form>
     </Field>
-    {error && <Alert variant="destructive" className="sm:col-span-2"><TriangleAlert aria-hidden="true" /><AlertTitle>Location search unavailable</AlertTitle><AlertDescription>{error}</AlertDescription></Alert>}
+    {error && <Alert variant="destructive" className="sm:col-span-2"><TriangleAlert aria-hidden="true" /><AlertTitle>{language === "fil" ? "Hindi available ang paghahanap ng lokasyon" : "Location search unavailable"}</AlertTitle><AlertDescription>{error}</AlertDescription></Alert>}
   </div>;
 }

@@ -1,5 +1,8 @@
 "use client";
 
+import { useState } from "react";
+import Image from "next/image";
+
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -19,13 +22,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { HelpCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Check, HelpCircle } from "lucide-react";
 import {
   CROP_OPTIONS,
+  CROP_LABELS_FIL,
   IRRIGATION_OPTIONS,
+  IRRIGATION_LABELS_FIL,
   PRIORITY_OPTIONS,
+  PRIORITY_LABELS_FIL,
   SEASON_OPTIONS,
+  SEASON_LABELS_FIL,
   SOIL_OPTIONS,
+  SOIL_LABELS_FIL,
   toggleSelection,
 } from "@/lib/farm";
 import { useFarm } from "./farm-provider";
@@ -33,34 +42,35 @@ import { useLanguage } from "@/components/language-provider";
 
 export function FarmFields() {
   const { farm, setFarm } = useFarm();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const [selectedPeriod, setSelectedPeriod] = useState(0);
+  const [cropPickerOpen, setCropPickerOpen] = useState(true);
 
   return (
     <FieldGroup className="gap-4">
         <FieldSet className="gap-2">
           <FieldLegend variant="label" className="mb-0 font-semibold">{t("currentRotation")}</FieldLegend>
           <FieldDescription>{t("rotationHelp")}</FieldDescription>
-          <div className="grid gap-3 sm:grid-cols-3">
+          <div className="grid gap-2 sm:grid-cols-3" role="tablist" aria-label={t("currentRotation")}>
             {farm.currentRotation.map((crop, index) => (
-              <Field key={`rotation-${index}`}>
-                <FieldLabel htmlFor={`rotation-${index}`}>{t("growingPeriod")} {index + 1}</FieldLabel>
-                <Select
-                  name={`rotation-${index}`}
-                  value={crop}
-                  items={CROP_OPTIONS.map((value) => ({ value, label: value }))}
-                  onValueChange={(value) => {
-                    if (value !== null) setFarm((current) => ({
-                      ...current,
-                      currentRotation: current.currentRotation.map((item, itemIndex) => itemIndex === index ? value : item),
-                    }));
-                  }}
-                >
-                  <SelectTrigger id={`rotation-${index}`}><SelectValue /></SelectTrigger>
-                  <SelectContent><SelectGroup>{CROP_OPTIONS.map((option) => <SelectItem key={option} value={option}>{option}</SelectItem>)}</SelectGroup></SelectContent>
-                </Select>
-              </Field>
+              <Button key={`period-${index}`} type="button" variant="ghost" role="tab" aria-selected={selectedPeriod === index} onClick={() => { setSelectedPeriod(index); setCropPickerOpen(true); }} className={`min-h-12 justify-start border ${selectedPeriod === index ? "border-primary bg-accent text-primary" : "border-border bg-card text-foreground hover:border-primary hover:bg-accent"}`}>
+                <span className={`grid size-7 place-items-center rounded-md ${selectedPeriod === index ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>{index + 1}</span>
+                {t("growingPeriod")} {index + 1}: <span className="font-normal">{language === "fil" ? CROP_LABELS_FIL[crop] : crop}</span>
+              </Button>
             ))}
           </div>
+          {cropPickerOpen && <>
+            <div role="tabpanel" aria-label={`${t("growingPeriod")} ${selectedPeriod + 1}`} className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              {CROP_OPTIONS.map((option, index) => {
+                const selected = farm.currentRotation[selectedPeriod] === option;
+                return <Button key={option} type="button" variant="ghost" aria-pressed={selected} onClick={() => setFarm((current) => ({ ...current, currentRotation: current.currentRotation.map((item, itemIndex) => itemIndex === selectedPeriod ? option : item) }))} className={`h-28 flex-col gap-2 rounded-xl border px-2 text-center ${index === CROP_OPTIONS.length - 1 ? "sm:col-start-2" : ""} ${selected ? "border-2 border-primary bg-accent text-primary" : "border-border bg-card text-muted-foreground hover:border-primary hover:bg-accent"}`}>
+                  <CropIcon crop={option} large />
+                  <span className="font-semibold">{language === "fil" ? CROP_LABELS_FIL[option] : option}</span>
+                </Button>;
+              })}
+            </div>
+            <div className="flex justify-end"><Button type="button" variant="outline" onClick={() => setCropPickerOpen(false)}><Check aria-hidden="true" />{language === "fil" ? "Tapos na" : "Done"}</Button></div>
+          </>}
         </FieldSet>
         <FieldSet className="gap-2">
           <FieldLegend variant="label" className="mb-0 font-semibold">{t("irrigation")}</FieldLegend>
@@ -85,8 +95,8 @@ export function FarmFields() {
                 <FieldLabel
                   htmlFor={`irrigation-${option.toLowerCase()}`}
                   className="min-h-12 cursor-pointer pr-3"
-                >
-                  {option}
+                  >
+                    <span className="flex items-center gap-2"><IrrigationIcon option={option} />{language === "fil" ? IRRIGATION_LABELS_FIL[option] : option}</span>
                 </FieldLabel>
               </Field>
             ))}
@@ -96,14 +106,12 @@ export function FarmFields() {
         <Field>
           <div className="flex items-center gap-1">
             <FieldLabel htmlFor="soil">{t("soilTexture")}</FieldLabel>
-            <FieldHelp label="Soil texture help">
-              Use the texture from your farm records or soil assessment. If unsure, ask your local agricultural office before relying on a recommendation.
-            </FieldHelp>
+            <FieldHelp label={language === "fil" ? "Tulong sa tekstura ng lupa" : "Soil texture help"}>{t("soilHelp")}</FieldHelp>
           </div>
           <Select
             name="soil"
             value={farm.soil}
-            items={SOIL_OPTIONS.map((value) => ({ value, label: value }))}
+            items={SOIL_OPTIONS.map((value) => ({ value, label: language === "fil" ? SOIL_LABELS_FIL[value] : value }))}
             onValueChange={(value) => {
               if (value !== null)
                 setFarm((current) => ({ ...current, soil: value }));
@@ -116,7 +124,7 @@ export function FarmFields() {
               <SelectGroup>
                 {SOIL_OPTIONS.map((option) => (
                   <SelectItem key={option} value={option}>
-                    {option}
+                    {language === "fil" ? SOIL_LABELS_FIL[option] : option}
                   </SelectItem>
                 ))}
               </SelectGroup>
@@ -126,14 +134,12 @@ export function FarmFields() {
         <Field>
           <div className="flex items-center gap-1">
             <FieldLabel htmlFor="season">{t("season")}</FieldLabel>
-            <FieldHelp label="Season help">
-              Choose the growing period you are planning for. The app uses this selection to screen seasonal rainfall and temperature fit.
-            </FieldHelp>
+            <FieldHelp label={language === "fil" ? "Tulong sa panahon" : "Season help"}>{t("seasonHelp")}</FieldHelp>
           </div>
           <Select
             name="season"
             value={farm.season}
-            items={SEASON_OPTIONS.map((value) => ({ value, label: value }))}
+            items={SEASON_OPTIONS.map((value) => ({ value, label: language === "fil" ? SEASON_LABELS_FIL[value] : value }))}
             onValueChange={(value) => {
               if (value !== null)
                 setFarm((current) => ({ ...current, season: value }));
@@ -146,7 +152,7 @@ export function FarmFields() {
               <SelectGroup>
                 {SEASON_OPTIONS.map((option) => (
                   <SelectItem key={option} value={option}>
-                    {option}
+                    {language === "fil" ? SEASON_LABELS_FIL[option] : option}
                   </SelectItem>
                 ))}
               </SelectGroup>
@@ -181,7 +187,7 @@ export function FarmFields() {
                 htmlFor={`priority-${index}`}
                 className="min-h-11 cursor-pointer"
               >
-                {priority}
+                <span className="flex items-center gap-2"><PriorityIcon priority={priority} />{language === "fil" ? PRIORITY_LABELS_FIL[priority] : priority}</span>
               </FieldLabel>
             </Field>
           ))}
@@ -189,11 +195,11 @@ export function FarmFields() {
       </FieldSet>
       <Accordion>
         <AccordionItem value="conditions-help">
-          <AccordionTrigger className="min-h-11 items-center">Help with soil and season</AccordionTrigger>
+          <AccordionTrigger className="min-h-11 items-center">{language === "fil" ? "Tulong sa lupa at panahon" : "Help with soil and season"}</AccordionTrigger>
           <AccordionContent>
             <div className="space-y-3 text-sm text-muted-foreground">
-              <p><strong className="font-medium text-foreground">Soil texture:</strong> use the value from your farm records or soil assessment. If you are unsure, ask your local agricultural office before relying on a recommendation.</p>
-              <p><strong className="font-medium text-foreground">Season:</strong> choose the season you are planning for. These are editable examples; the app has not detected your soil or season.</p>
+              <p><strong className="font-medium text-foreground">{t("soilTexture")}:</strong> {t("soilHelp")}</p>
+              <p><strong className="font-medium text-foreground">{t("season")}:</strong> {t("seasonHelp")}</p>
             </div>
           </AccordionContent>
         </AccordionItem>
@@ -214,4 +220,22 @@ function FieldHelp({ label, children }: { label: string; children: React.ReactNo
       </span>
     </span>
   );
+}
+
+function CropIcon({ crop, large = false }: { crop: string; large?: boolean }) {
+  const codes: Record<string, string> = { Rice: "1F33E", Corn: "1F33D", "Mung bean": "1FAD8", "Sweet potato": "1F360", Eggplant: "1F346", "Yardlong bean": "1FADB", Peanut: "1F95C" };
+  return <Image src={`https://cdn.jsdelivr.net/gh/hfg-gmuend/openmoji@master/color/svg/${codes[crop] ?? "1F331"}.svg`} alt="" aria-hidden="true" width={large ? 40 : 20} height={large ? 40 : 20} className={`${large ? "size-10" : "size-5"} shrink-0 object-contain`} unoptimized />;
+}
+
+function IrrigationIcon({ option }: { option: string }) {
+  return <OpenMojiIcon code={option === "Adequate" ? "1F4A7" : "2600"} />;
+}
+
+function PriorityIcon({ priority }: { priority: string }) {
+  const code = priority === "Conserve water" ? "1F4A7" : priority === "Improve soil health" ? "1F331" : priority === "Climate suitability" ? "2600" : priority === "Reduce heat stress" ? "1F321" : priority === "Support crop diversity" ? "1F343" : "267B";
+  return <OpenMojiIcon code={code} />;
+}
+
+function OpenMojiIcon({ code }: { code: string }) {
+  return <Image src={`https://cdn.jsdelivr.net/gh/hfg-gmuend/openmoji@master/color/svg/${code}.svg`} alt="" aria-hidden="true" width={20} height={20} className="size-5 shrink-0 object-contain" unoptimized />;
 }

@@ -9,9 +9,11 @@ import { buttonVariants } from "@/components/ui/button";
 import type { Rotation } from "@/lib/rotations";
 import { useFarm } from "@/components/farm/farm-provider";
 import type { RecommendationResult } from "@/lib/recommendation-engine";
+import { useLanguage } from "@/components/language-provider";
 
 export function RotationDetail({ rotation: initialRotation }: { rotation: Rotation }) {
   const { farm } = useFarm();
+  const { language, t } = useLanguage();
   const [current, setCurrent] = useState(initialRotation);
 
   useEffect(() => {
@@ -32,7 +34,7 @@ export function RotationDetail({ rotation: initialRotation }: { rotation: Rotati
     <div className="space-y-6">
       <div className="space-y-3">
         <Link href="/analysis" className={buttonVariants({ variant: "link", className: "px-0" })}>
-          <ArrowLeft aria-hidden="true" />Back to comparison
+          <ArrowLeft aria-hidden="true" />{language === "fil" ? "Bumalik sa paghahambing" : "Back to comparison"}
         </Link>
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="max-w-prose space-y-2">
@@ -47,14 +49,14 @@ export function RotationDetail({ rotation: initialRotation }: { rotation: Rotati
       </div>
       <Alert variant="warning" role="note" className="py-3">
         <Info aria-hidden="true" />
-        <AlertTitle>Screening estimate</AlertTitle>
+        <AlertTitle>{t("screeningEstimate")}</AlertTitle>
         <AlertDescription>This rotation is calculated from the selected farm location, supplied NASA climate grid, modeled soil layers, irrigation access, and selected priorities. It is not a guaranteed yield prediction.</AlertDescription>
       </Alert>
       <div className="grid gap-6 border-t pt-6 lg:grid-cols-2 lg:gap-12">
         <section aria-labelledby="sequence-title" className="space-y-4">
           <div className="space-y-1">
-            <h2 id="sequence-title" className="text-title">Crop sequence</h2>
-            <p className="text-sm text-muted-foreground">The order of crops across three growing periods in this screening rotation.</p>
+            <h2 id="sequence-title" className="text-title">{language === "fil" ? "Pagkakasunod-sunod ng pananim" : "Crop sequence"}</h2>
+            <p className="text-sm text-muted-foreground">{language === "fil" ? "Ang ayos ng mga pananim sa tatlong panahon ng pagtatanim sa rotation na ito." : "The order of crops across three growing periods in this screening rotation."}</p>
           </div>
           <ol className="flex flex-wrap items-center gap-4">
             {rotation.crops.map((crop, index) => (

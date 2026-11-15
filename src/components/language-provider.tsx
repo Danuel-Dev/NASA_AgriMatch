@@ -11,7 +11,7 @@ type TranslationKey = keyof typeof translations.en;
 type LanguageContextValue = { language: Language; setLanguage: (language: Language) => void; t: (key: TranslationKey) => string };
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguageState] = useState<Language>("en");
+  const [language, setLanguageState] = useState<Language>("fil");
   useEffect(() => {
     const saved = window.localStorage.getItem("agrimatch-language");
     if (saved !== "en" && saved !== "fil") return;

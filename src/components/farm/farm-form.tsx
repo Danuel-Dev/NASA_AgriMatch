@@ -31,7 +31,7 @@ export function FarmForm({ step, onStepChange }: { step: 1 | 2; onStepChange: (s
   const help = !farm.point
     ? t("chooseLocation")
     : farm.currentRotation.length !== 3
-      ? "Choose a crop for each growing period to continue."
+      ? (language === "fil" ? "Pumili ng pananim para sa bawat panahon upang magpatuloy." : "Choose a crop for each growing period to continue.")
       : !farm.priorities.length
       ? t("choosePriority")
       : t("ready");

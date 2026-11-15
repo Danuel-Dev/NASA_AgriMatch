@@ -10,9 +10,11 @@ import { formatCoordinates, isSupportedPoint, type FarmPoint } from "@/lib/farm"
 import { useFarm } from "./farm-provider";
 import { FarmMap } from "./farm-map";
 import { LocationSearch } from "./location-search";
+import { useLanguage } from "@/components/language-provider";
 
 export function FarmLocation() {
   const { farm, setFarm } = useFarm();
+  const { language } = useLanguage();
   const [locationError, setLocationError] = useState("");
   const [locating, setLocating] = useState(false);
   const [mapExpanded, setMapExpanded] = useState(false);
@@ -22,7 +24,7 @@ export function FarmLocation() {
 
   function selectLocation(point: FarmPoint, name: string) {
     if (!isSupportedPoint(point)) {
-      setLocationError("This location is outside the Albay pilot area. Search in Albay or select a point on the map.");
+      setLocationError(language === "fil" ? "Nasa labas ng pilotong lugar ng Albay ang lokasyong ito. Maghanap sa Albay o pumili ng punto sa mapa." : "This location is outside the Albay pilot area. Search in Albay or select a point on the map.");
       return;
     }
     locationRequest.current += 1;
@@ -33,7 +35,7 @@ export function FarmLocation() {
 
   function useMyLocation() {
     if (!navigator.geolocation) {
-      setLocationError("Location is not available in this browser. Search for your farm or select a point on the map.");
+      setLocationError(language === "fil" ? "Hindi available ang lokasyon sa browser na ito. Maghanap ng bukid o pumili ng punto sa mapa." : "Location is not available in this browser. Search for your farm or select a point on the map.");
       return;
     }
     const request = ++locationRequest.current;
@@ -47,7 +49,7 @@ export function FarmLocation() {
       () => {
         if (request !== locationRequest.current) return;
         setLocating(false);
-        setLocationError("We could not access your location. Allow location access or search for a place in Albay.");
+        setLocationError(language === "fil" ? "Hindi namin ma-access ang iyong lokasyon. Payagan ang access o maghanap ng lugar sa Albay." : "We could not access your location. Allow location access or search for a place in Albay.");
       },
       { timeout: 15000, maximumAge: 0 },
     );
@@ -58,20 +60,20 @@ export function FarmLocation() {
       <div className="min-w-0 flex-1"><LocationSearch onSelect={selectLocation} /></div>
       <Button type="button" variant="outline" onClick={useMyLocation} disabled={locating}>
         {locating ? <Spinner aria-hidden="true" /> : <LocateFixed aria-hidden="true" />}
-        {locating ? "Finding your location..." : "Use my location"}
+        {locating ? (language === "fil" ? "Hinahanap ang iyong lokasyon..." : "Finding your location...") : (language === "fil" ? "Gamitin ang aking lokasyon" : "Use my location")}
       </Button>
     </div>
     <div className="flex justify-end">
       <Button type="button" variant="ghost" size="sm" className="lg:hidden" aria-expanded={mapExpanded} aria-controls="farm-map-region" onClick={() => setMapExpanded((current) => !current)}>
         {mapExpanded ? <Minimize2 aria-hidden="true" /> : <Maximize2 aria-hidden="true" />}
-        {mapExpanded ? "Reduce map" : "Expand map"}
+        {mapExpanded ? (language === "fil" ? "Paliitin ang mapa" : "Reduce map") : (language === "fil" ? "Palawakin ang mapa" : "Expand map")}
       </Button>
     </div>
-    {locationError && <Alert variant="destructive"><TriangleAlert aria-hidden="true" /><AlertTitle>Location could not be selected</AlertTitle><AlertDescription>{locationError}</AlertDescription></Alert>}
+    {locationError && <Alert variant="destructive"><TriangleAlert aria-hidden="true" /><AlertTitle>{language === "fil" ? "Hindi mapili ang lokasyon" : "Location could not be selected"}</AlertTitle><AlertDescription>{locationError}</AlertDescription></Alert>}
     <div id="farm-map-region"><FarmMap point={farm.point} onChange={(point) => selectLocation(point, "Selected farm in Albay")} className={mapExpanded ? "h-120 lg:h-107.5" : undefined} /></div>
-    <p className="text-sm text-muted-foreground">Click to place a pin. Drag it to refine your location.</p>
+    <p className="text-sm text-muted-foreground">{language === "fil" ? "I-click upang maglagay ng pin. I-drag ito upang ayusin ang lokasyon." : "Click to place a pin. Drag it to refine your location."}</p>
     <div role="status" aria-live="polite" className="flex flex-wrap items-center justify-between gap-2 text-sm">
-      {farm.point && <><Badge variant="success"><Check aria-hidden="true" />Farm location selected</Badge><p className="font-mono tabular-nums">{formatCoordinates(farm.point)}</p><p className="w-full wrap-anywhere text-muted-foreground">{farm.locationName}</p></>}
+      {farm.point && <><Badge variant="success"><Check aria-hidden="true" />{language === "fil" ? "Napili ang lokasyon ng bukid" : "Farm location selected"}</Badge><p className="font-mono tabular-nums">{formatCoordinates(farm.point)}</p><p className="w-full wrap-anywhere text-muted-foreground">{farm.locationName}</p></>}
     </div>
   </div>;
 }

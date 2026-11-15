@@ -10,13 +10,14 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useFarm } from "@/components/farm/farm-provider";
 import type { CropAssessment, RecommendationResult } from "@/lib/recommendation-engine";
+import { CROP_LABELS_FIL } from "@/lib/farm";
 import { FarmConditions, FarmSnapshot } from "./farm-snapshot";
 import { RotationOption } from "./rotation-option";
 import { useLanguage } from "@/components/language-provider";
 
 export function AnalysisView() {
   const { farm } = useFarm();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [result, setResult] = useState<RecommendationResult | null>(null);
   const [error, setError] = useState("");
 
@@ -71,14 +72,14 @@ export function AnalysisView() {
         </div>
       </section>
       {result ? <EnvironmentalSummary crops={sortedCrops} /> : <div className="grid gap-4 md:grid-cols-3"><Skeleton className="h-28" /><Skeleton className="h-28" /><Skeleton className="h-28" /></div>}
-      <p className="max-w-prose text-sm text-muted-foreground">Climate values come from the nearest supplied NASA POWER grid cell and 2015–2025 monthly history. Soil values are modeled estimates for the upper 30 cm, not field soil-test results.</p>
+      <p className="max-w-prose text-sm text-muted-foreground">{language === "fil" ? "Ang mga halaga ng klima ay mula sa pinakamalapit na NASA POWER-derived grid cell at buwanang kasaysayan ng 2015–2025. Ang halaga ng lupa ay modelo para sa itaas na 30 cm, hindi resulta ng field soil test." : "Climate values come from the nearest supplied NASA POWER grid cell and 2015–2025 monthly history. Soil values are modeled estimates for the upper 30 cm, not field soil-test results."}</p>
     </div>
   );
 }
 
 function EnvironmentalSummary({ crops }: { crops: CropAssessment[] }) {
   return <section aria-labelledby="crop-screening-title" className="space-y-4 border-y py-5">
-    <div className="space-y-1"><h2 id="crop-screening-title" className="text-title">Crop suitability screening</h2><p className="text-sm text-muted-foreground">Seasonal rainfall warnings are shown beside each crop score.</p></div>
+    <div className="space-y-1"><h2 id="crop-screening-title" className="text-title">{useLanguage().t("cropScreening")}</h2><p className="text-sm text-muted-foreground">{useLanguage().language === "fil" ? "Makikita ang mga babala sa pana-panahong ulan sa tabi ng score ng bawat pananim." : "Seasonal rainfall warnings are shown beside each crop score."}</p></div>
     <div className="grid gap-x-8 gap-y-3 md:grid-cols-2">
       {crops.map((assessment) => <CropResult key={assessment.crop} assessment={assessment} />)}
     </div>
@@ -102,10 +103,13 @@ function Metric({ label, value, detail }: { label: string; value: string; detail
 }
 
 function CropResult({ assessment }: { assessment: CropAssessment }) {
+  const { language } = useLanguage();
+  const cropName = language === "fil" ? (CROP_LABELS_FIL[assessment.crop] ?? assessment.crop) : assessment.crop;
+  if (language === "fil") assessment = { ...assessment, crop: cropName };
   return <Accordion className="rounded-lg border bg-card px-4">
     <AccordionItem value={assessment.crop}>
       <AccordionTrigger className="py-4 hover:no-underline">
-        <span className="min-w-0 flex-1 text-left"><span className="block font-semibold">{assessment.crop}</span><span className="mt-1 block text-sm font-normal text-muted-foreground">Rainfall: {Math.round(assessment.rainfallTotal)} mm · Mean temperature: {assessment.meanTemperature.toFixed(1)}°C</span></span>
+        <span className="min-w-0 flex-1 text-left"><span className="block font-semibold">{assessment.crop}</span><span className="mt-1 block text-sm font-normal text-muted-foreground">{language === "fil" ? "Ulan" : "Rainfall"}: {Math.round(assessment.rainfallTotal)} mm · {language === "fil" ? "Katamtamang temperatura" : "Mean temperature"}: {assessment.meanTemperature.toFixed(1)}°C</span></span>
         <span className="shrink-0 pr-2 font-semibold tabular-nums text-primary">{assessment.score}/100</span>
       </AccordionTrigger>
       <AccordionContent className="space-y-4 pb-4">

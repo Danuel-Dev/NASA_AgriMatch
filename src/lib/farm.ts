@@ -21,6 +21,28 @@ export const PRIORITY_OPTIONS = [
   "Reduce input needs",
 ];
 
+export const CROP_LABELS_FIL: Record<string, string> = {
+  Rice: "Palay",
+  Corn: "Mais",
+  "Mung bean": "Monggo",
+  "Sweet potato": "Kamote",
+  Eggplant: "Talong",
+  "Yardlong bean": "Sitaw",
+  Peanut: "Mani",
+};
+
+export const IRRIGATION_LABELS_FIL: Record<string, string> = { Adequate: "Sapat", Limited: "Limitado" };
+export const SOIL_LABELS_FIL: Record<string, string> = { "Clay loam": "Lupang luwad na loam", "Sandy loam": "Loam na mabuhangin", Clay: "Luwad", Loam: "Loam" };
+export const SEASON_LABELS_FIL: Record<string, string> = { "Wet season": "Tag-ulan", "Dry season": "Tag-init", "Transition season": "Panahon ng paglipat" };
+export const PRIORITY_LABELS_FIL: Record<string, string> = {
+  "Conserve water": "Magtipid ng tubig",
+  "Improve soil health": "Pagandahin ang kalusugan ng lupa",
+  "Climate suitability": "Angkop sa klima",
+  "Reduce heat stress": "Bawasan ang stress sa init",
+  "Support crop diversity": "Suportahan ang diversity ng pananim",
+  "Reduce input needs": "Bawasan ang pangangailangan sa input",
+};
+
 export type FarmDraft = {
   point: FarmPoint | null;
   locationName: string;
