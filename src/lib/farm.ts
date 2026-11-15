@@ -56,7 +56,7 @@ export type FarmDraft = {
 export const INITIAL_FARM: FarmDraft = {
   point: null,
   locationName: "Albay, Philippines",
-  currentRotation: ["Rice", "Peanut", "Yardlong bean"],
+  currentRotation: [],
   irrigation: "Adequate",
   soil: "Clay",
   season: "Dry season",

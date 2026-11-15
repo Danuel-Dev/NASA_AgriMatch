@@ -5,18 +5,23 @@ import Image from "next/image";
 import { ArrowRight, Sprout, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/components/language-provider";
+import { useFarm } from "./farm-provider";
 import { FarmPlanner } from "./farm-planner";
 
 export function FarmExperience() {
   const [started, setStarted] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const { t, language } = useLanguage();
+  const { setFarm } = useFarm();
   React.useEffect(() => {
     if (new URLSearchParams(window.location.search).get("start") !== "1") return;
     window.history.replaceState({}, "", "/");
-    const timer = window.setTimeout(() => setLoading(true), 0);
+    const timer = window.setTimeout(() => {
+      setFarm((farm) => ({ ...farm, currentRotation: [] }));
+      setLoading(true);
+    }, 0);
     return () => window.clearTimeout(timer);
-  }, []);
+  }, [setFarm]);
   React.useEffect(() => {
     if (!loading) return;
     const timer = window.setTimeout(() => {
