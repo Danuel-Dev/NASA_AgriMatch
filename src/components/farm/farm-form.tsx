@@ -15,7 +15,7 @@ export function FarmForm() {
   const ready =
     !!farm.point &&
     isSupportedPoint(farm.point) &&
-    farm.crops.length > 0 &&
+    farm.currentRotation.length === 3 &&
     farm.priorities.length > 0;
 
   function compareFarm(event: FormEvent<HTMLFormElement>) {
@@ -26,8 +26,8 @@ export function FarmForm() {
 
   const help = !farm.point
     ? "Choose a farm location to continue."
-    : !farm.crops.length
-      ? "Select at least one current crop to continue."
+    : farm.currentRotation.length !== 3
+      ? "Choose a crop for each growing period to continue."
       : !farm.priorities.length
         ? "Choose at least one priority to continue."
         : "Ready to compare. Results are screening estimates from the supplied datasets.";

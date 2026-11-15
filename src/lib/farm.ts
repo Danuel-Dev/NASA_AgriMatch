@@ -24,7 +24,6 @@ export const PRIORITY_OPTIONS = [
 export type FarmDraft = {
   point: FarmPoint | null;
   locationName: string;
-  crops: string[];
   currentRotation: string[];
   irrigation: string;
   soil: string;
@@ -35,7 +34,6 @@ export type FarmDraft = {
 export const INITIAL_FARM: FarmDraft = {
   point: null,
   locationName: "Albay, Philippines",
-  crops: ["Rice"],
   currentRotation: ["Rice", "Rice", "Rice"],
   irrigation: "Adequate",
   soil: "Clay loam",

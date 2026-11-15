@@ -32,13 +32,6 @@ import { useFarm } from "./farm-provider";
 export function FarmFields() {
   const { farm, setFarm } = useFarm();
 
-  function toggleCrop(crop: string) {
-    setFarm((current) => ({
-      ...current,
-      crops: toggleSelection(current.crops, crop),
-    }));
-  }
-
   return (
     <FieldGroup className="gap-4">
         <FieldSet className="gap-2">
@@ -65,39 +58,6 @@ export function FarmFields() {
               </Field>
             ))}
           </div>
-        </FieldSet>
-        <FieldSet className="gap-2">
-          <FieldLegend variant="label" className="mb-0 font-semibold">Current crops</FieldLegend>
-          <FieldDescription id="crops-help" className="sr-only">
-            Choose the crops currently grown on this farm.
-          </FieldDescription>
-          <div
-            className="flex flex-wrap gap-2"
-            role="group"
-            aria-label="Current crops"
-            aria-describedby="crops-help"
-          >
-            {CROP_OPTIONS.map((crop) => (
-              <Field key={crop} orientation="horizontal" className="w-auto">
-                <Checkbox
-                  id={`crop-${crop.toLowerCase()}`}
-                  checked={farm.crops.includes(crop)}
-                  onCheckedChange={() => toggleCrop(crop)}
-                />
-                <FieldLabel
-                  htmlFor={`crop-${crop.toLowerCase()}`}
-                  className="min-h-11 cursor-pointer pr-3"
-                >
-                  {crop}
-                </FieldLabel>
-              </Field>
-            ))}
-          </div>
-            {!farm.crops.length && (
-              <FieldDescription>
-                Select at least one crop to compare rotations.
-              </FieldDescription>
-            )}
         </FieldSet>
         <FieldSet className="gap-2">
           <FieldLegend variant="label" className="mb-0 font-semibold">Irrigation</FieldLegend>

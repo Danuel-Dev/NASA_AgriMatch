@@ -61,7 +61,7 @@ export function FarmConditions({ result }: { result?: RecommendationResult | nul
         </dl>
       </div>
       <div className="space-y-4">
-        <div className="space-y-2"><h3 className="text-base font-semibold">Current crops</h3><div className="flex flex-wrap gap-2" aria-label="Selected crops">{farm.crops.map((crop) => <Badge key={crop} variant="crop">{crop}</Badge>)}</div></div>
+        <div className="space-y-2"><h3 className="text-base font-semibold">Current rotation</h3><div className="flex flex-wrap gap-2" aria-label="Current crop rotation">{farm.currentRotation.map((crop, index) => <Badge key={`${crop}-${index}`} variant="crop">Period {index + 1}: {crop}</Badge>)}</div></div>
         <div className="space-y-2"><h3 className="text-base font-semibold">Your priorities</h3><div className="flex flex-wrap gap-2">{farm.priorities.map((priority) => <Badge key={priority} variant="secondary">{priority}</Badge>)}</div></div>
       </div>
     </div>
