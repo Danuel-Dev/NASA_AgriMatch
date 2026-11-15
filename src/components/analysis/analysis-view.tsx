@@ -38,7 +38,7 @@ export function AnalysisView() {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="space-y-2">
           <h1 className="text-headline">Compare rotations</h1>
-          <p className="max-w-prose text-muted-foreground">Explore crop sequences and the trade-offs behind each option.</p>
+          <p className="max-w-prose text-muted-foreground">Compare your three-period crop sequence with two alternatives and inspect the trade-offs behind each option.</p>
         </div>
         <Link href="/#farm-workspace" className={buttonVariants({ variant: "outline" })}>
           <ArrowLeft aria-hidden="true" />Edit your farm

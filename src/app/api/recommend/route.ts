@@ -7,6 +7,7 @@ export async function POST(request: Request) {
   try {
     const farm = await request.json() as FarmDraft;
     if (!farm?.point || !isSupportedPoint(farm.point)) return NextResponse.json({ error: "Select a farm inside the Albay pilot area." }, { status: 400 });
+    if (!Array.isArray(farm.currentRotation) || farm.currentRotation.length !== 3 || farm.currentRotation.some((crop) => typeof crop !== "string")) return NextResponse.json({ error: "Choose a three-period current rotation." }, { status: 400 });
     const [climate, soil] = await Promise.all([sampleClimate(farm.point.lat, farm.point.lng), sampleSoil(farm.point.lat, farm.point.lng)]);
     return NextResponse.json(recommend(farm, climate, soil));
   } catch (error) {

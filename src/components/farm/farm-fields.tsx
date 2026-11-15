@@ -42,6 +42,31 @@ export function FarmFields() {
   return (
     <FieldGroup className="gap-4">
         <FieldSet className="gap-2">
+          <FieldLegend variant="label" className="mb-0 font-semibold">Current rotation</FieldLegend>
+          <FieldDescription>Choose the crop sequence you currently use across three growing periods.</FieldDescription>
+          <div className="grid gap-3 sm:grid-cols-3">
+            {farm.currentRotation.map((crop, index) => (
+              <Field key={`rotation-${index}`}>
+                <FieldLabel htmlFor={`rotation-${index}`}>Growing period {index + 1}</FieldLabel>
+                <Select
+                  name={`rotation-${index}`}
+                  value={crop}
+                  items={CROP_OPTIONS.map((value) => ({ value, label: value }))}
+                  onValueChange={(value) => {
+                    if (value !== null) setFarm((current) => ({
+                      ...current,
+                      currentRotation: current.currentRotation.map((item, itemIndex) => itemIndex === index ? value : item),
+                    }));
+                  }}
+                >
+                  <SelectTrigger id={`rotation-${index}`}><SelectValue /></SelectTrigger>
+                  <SelectContent><SelectGroup>{CROP_OPTIONS.map((option) => <SelectItem key={option} value={option}>{option}</SelectItem>)}</SelectGroup></SelectContent>
+                </Select>
+              </Field>
+            ))}
+          </div>
+        </FieldSet>
+        <FieldSet className="gap-2">
           <FieldLegend variant="label" className="mb-0 font-semibold">Current crops</FieldLegend>
           <FieldDescription id="crops-help" className="sr-only">
             Choose the crops currently grown on this farm.

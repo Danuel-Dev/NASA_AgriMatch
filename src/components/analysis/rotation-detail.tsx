@@ -54,7 +54,7 @@ export function RotationDetail({ rotation: initialRotation }: { rotation: Rotati
         <section aria-labelledby="sequence-title" className="space-y-4">
           <div className="space-y-1">
             <h2 id="sequence-title" className="text-title">Crop sequence</h2>
-            <p className="text-sm text-muted-foreground">The order of crops in this screening rotation.</p>
+            <p className="text-sm text-muted-foreground">The order of crops across three growing periods in this screening rotation.</p>
           </div>
           <ol className="flex flex-wrap items-center gap-4">
             {rotation.crops.map((crop, index) => (

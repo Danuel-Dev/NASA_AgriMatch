@@ -86,7 +86,7 @@ export function buildRotations(assessments: CropAssessment[], farm: FarmDraft): 
   const byWater = [...assessments].sort((a, b) => (a.rule.waterDemand === "low" ? 0 : a.rule.waterDemand === "medium" ? 1 : 2) - (b.rule.waterDemand === "low" ? 0 : b.rule.waterDemand === "medium" ? 1 : 2));
   const bySoil = [...assessments].sort((a, b) => b.rule.soilHealth - a.rule.soilHealth);
   const diverse = ["low", "medium", "high"].map((demand) => sorted.find((item) => item.rule.waterDemand === demand)).filter((item): item is CropAssessment => !!item);
-  const current = farm.crops.map((crop) => assessments.find((item) => item.crop === crop)).filter((item): item is CropAssessment => !!item);
+  const current = farm.currentRotation.map((crop) => assessments.find((item) => item.crop === crop)).filter((item): item is CropAssessment => !!item);
   const cropReason = (item: CropAssessment) => {
     const reasons: string[] = [];
     if (item.rainfallScore >= 80) reasons.push("seasonal rainfall fits its growing range");
@@ -100,15 +100,21 @@ export function buildRotations(assessments: CropAssessment[], farm: FarmDraft): 
   const waterFirst = farm.priorities.includes("Conserve water") || farm.priorities.includes("Reduce input needs");
   const soilFirst = farm.priorities.includes("Improve soil health");
   const diversityFirst = farm.priorities.includes("Support crop diversity");
-  const rotation = (id: string, name: string, list: CropAssessment[], summary: string, explanation: string, tradeoff: string, tone: RotationResult["tone"]): RotationResult => ({
-    id, name, crops: list.slice(0, 3).map((item) => item.crop), score: clamp(Math.round(average(list.slice(0, 3).map((item) => item.score)) + priorityWeight)), summary, explanation, strengths: list.slice(0, 3).map((item) => `${item.crop} (${item.score}/100): ${cropReason(item)}.`), tradeoff, tone,
+  const rotation = (id: string, name: string, list: CropAssessment[], summary: string, explanation: string, tradeoff: string, tone: RotationResult["tone"]): RotationResult => {
+    const sequence = list.slice(0, 3);
+    const uniqueCrops = new Set(sequence.map((item) => item.crop)).size;
+    const legumeCount = sequence.filter((item) => item.rule.soilHealth >= 4).length;
+    const transitionScore = clamp(55 + (uniqueCrops - 1) * 12 + legumeCount * 10);
+    const sequenceScore = clamp(Math.round(average(sequence.map((item) => item.score)) * 0.78 + transitionScore * 0.22 + priorityWeight));
+    return { id, name, crops: sequence.map((item) => item.crop), score: sequenceScore, summary, explanation, strengths: sequence.map((item) => `${item.crop} (${item.score}/100): ${cropReason(item)}.`), tradeoff, tone,
     priorityMetrics: [
       { label: "Water fit", value: Math.round(average(list.slice(0, 3).map((item) => item.waterScore))), tone: "blue" },
-      { label: "Soil health", value: Math.round(average(list.slice(0, 3).map((item) => item.soilScore * 0.7 + item.rule.soilHealth / 5 * 100 * 0.3))), tone: "green" },
+      { label: "Soil health", value: Math.round((average(sequence.map((item) => item.soilScore * 0.7 + item.rule.soilHealth / 5 * 100 * 0.3)) + transitionScore) / 2), tone: "green" },
       { label: "Climate fit", value: Math.round(average(list.slice(0, 3).map((item) => (item.rainfallScore + item.temperatureScore) / 2))), tone: "pink" },
       { label: "Heat resilience", value: Math.round(average(list.slice(0, 3).map((item) => clamp(100 - Math.max(0, item.maxTemperature - item.rule.heatStressC) * 12)))), tone: "amber" },
     ],
-  });
+    };
+  };
   return [
     rotation("option-1", "Rotation option 1", current.length ? current : sorted, "Evaluates the selected crops against the sampled conditions.", "This is the current crop mix used as a baseline for comparison.", "Keeping the current mix may leave some climate or water risks unchanged.", "blue"),
     rotation("option-2", "Rotation option 2", waterFirst ? byWater : sorted, "An alternative sequence using the sampled climate, soil, and water conditions.", "This alternative places more emphasis on crops with lower water demand when appropriate.", "A different crop mix may involve different management and market timing.", "green"),

@@ -1,6 +1,6 @@
 # AgriMatch
 
-Farm planning and demo crop-rotation comparisons for the Albay pilot.
+Farm planning and climate-resilient crop-rotation comparisons for the Albay pilot. The app evaluates a farmer's three-period current rotation against two alternatives using supplied NASA POWER-derived climate history and SoilGrids-derived soil layers.
 
 ## Development
 
@@ -41,6 +41,6 @@ Browser tests run the production build on port 3100, cover desktop and mobile, a
 
 ## Data and external services
 
-Climate and soil datasets are not connected. All three rotation scores and explanations are fixed demo values; the UI labels them accordingly. Farm summaries use the user's actual selections.
+Climate and soil datasets are sampled locally from supplied NASA POWER-derived 2015–2025 climate CSVs and SoilGrids-derived Albay rasters. Rotation scores are screening estimates: they combine crop suitability with sequence diversity and legume-like soil-building contributions, not measured yield, profit, or guaranteed soil-carbon change. Farm summaries use the user's actual selections.
 
 Location search retains the existing [Nominatim service](https://operations.osmfoundation.org/policies/nominatim/) and runs only after an explicit search action. Its public service prohibits keystroke autocomplete, limits combined application traffic to one request per second, and requires attribution and an identifiable Referer. Production deployment needs an appropriately configured provider/proxy, caching, and application-wide rate limiting; this interface migration does not add that infrastructure. Map tiles retain OpenStreetMap attribution. Coordinate entry remains available when external services fail.
