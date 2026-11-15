@@ -5,9 +5,12 @@ import Link from "next/link";
 import { Sparkle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/components/language-provider";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const mainRef = useRef<HTMLElement>(null);
+  const { language, setLanguage, t } = useLanguage();
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="mx-auto flex min-h-screen w-full max-w-(--page-width) flex-col">
@@ -22,7 +25,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50",
         })}
       >
-        Skip to content
+        {t("skip")}
       </Link>
       <header className="flex min-h-16 flex-wrap items-center justify-between gap-x-3 gap-y-1 border-b py-2">
         <Link
@@ -38,7 +41,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             Agri<span className="text-primary">Match</span>
           </span>
         </Link>
-        <Badge variant="outline">Albay pilot · Demo</Badge>
+        <div className="flex flex-wrap items-center justify-end gap-2">
+          <div className="flex items-center rounded-lg border border-input bg-card p-0.5" aria-label="Language">
+            <Button type="button" size="sm" variant={language === "en" ? "secondary" : "ghost"} onClick={() => setLanguage("en")} aria-pressed={language === "en"}>English</Button>
+            <Button type="button" size="sm" variant={language === "fil" ? "secondary" : "ghost"} onClick={() => setLanguage("fil")} aria-pressed={language === "fil"}>Filipino</Button>
+          </div>
+          <Badge variant="outline">{t("pilot")}</Badge>
+        </div>
       </header>
       <main
         ref={mainRef}
@@ -50,7 +59,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </main>
       <footer className="mt-6 flex flex-col gap-2 border-t py-4 text-sm text-muted-foreground sm:flex-row sm:justify-between">
         <span>AgriMatch</span>
-        <span>Built for climate-resilient farming in Albay</span>
+        <span>{t("footer")}</span>
       </footer>
       </div>
     </div>

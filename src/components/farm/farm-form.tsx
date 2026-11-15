@@ -7,9 +7,11 @@ import { useFarm } from "./farm-provider";
 import { FarmFields } from "./farm-fields";
 import { FarmLocation } from "./farm-location";
 import { CompareAction } from "./compare-action";
+import { useLanguage } from "@/components/language-provider";
 
 export function FarmForm() {
   const { farm } = useFarm();
+  const { t } = useLanguage();
   const router = useRouter();
   const [submitting, startTransition] = useTransition();
   const ready =
@@ -25,26 +27,26 @@ export function FarmForm() {
   }
 
   const help = !farm.point
-    ? "Choose a farm location to continue."
+    ? t("chooseLocation")
     : farm.currentRotation.length !== 3
       ? "Choose a crop for each growing period to continue."
       : !farm.priorities.length
-        ? "Choose at least one priority to continue."
-        : "Ready to compare. Results are screening estimates from the supplied datasets.";
+      ? t("choosePriority")
+      : t("ready");
 
   return (
     <div id="farm-workspace" className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_25rem]">
       <section aria-labelledby="farm-workspace-title" className="min-w-0 space-y-4">
         <div className="space-y-1">
-          <h2 id="farm-workspace-title" className="text-title">Farm location</h2>
-          <p className="text-sm text-muted-foreground">Search for a place or select your farm on the map.</p>
+          <h2 id="farm-workspace-title" className="text-title">{t("farmLocation")}</h2>
+          <p className="text-sm text-muted-foreground">{t("locationHelp")}</p>
         </div>
         <FarmLocation />
       </section>
       <section aria-labelledby="farm-setup-title" className="min-w-0 space-y-4 border-t pt-6 lg:border-t-0 lg:pt-0">
         <div className="space-y-1">
-          <h2 id="farm-setup-title" className="text-title">Farm conditions</h2>
-          <p className="text-sm text-muted-foreground">Demo presets. Edit to match your farm.</p>
+          <h2 id="farm-setup-title" className="text-title">{t("farmConditions")}</h2>
+          <p className="text-sm text-muted-foreground">{t("demoPresets")}</p>
         </div>
         <form onSubmit={compareFarm} className="space-y-4">
           <FarmFields />

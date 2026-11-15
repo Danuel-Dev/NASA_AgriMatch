@@ -29,19 +29,21 @@ import {
   toggleSelection,
 } from "@/lib/farm";
 import { useFarm } from "./farm-provider";
+import { useLanguage } from "@/components/language-provider";
 
 export function FarmFields() {
   const { farm, setFarm } = useFarm();
+  const { t } = useLanguage();
 
   return (
     <FieldGroup className="gap-4">
         <FieldSet className="gap-2">
-          <FieldLegend variant="label" className="mb-0 font-semibold">Current rotation</FieldLegend>
-          <FieldDescription>Choose the crop sequence you currently use across three growing periods.</FieldDescription>
+          <FieldLegend variant="label" className="mb-0 font-semibold">{t("currentRotation")}</FieldLegend>
+          <FieldDescription>{t("rotationHelp")}</FieldDescription>
           <div className="grid gap-3 sm:grid-cols-3">
             {farm.currentRotation.map((crop, index) => (
               <Field key={`rotation-${index}`}>
-                <FieldLabel htmlFor={`rotation-${index}`}>Growing period {index + 1}</FieldLabel>
+                <FieldLabel htmlFor={`rotation-${index}`}>{t("growingPeriod")} {index + 1}</FieldLabel>
                 <Select
                   name={`rotation-${index}`}
                   value={crop}
@@ -61,7 +63,7 @@ export function FarmFields() {
           </div>
         </FieldSet>
         <FieldSet className="gap-2">
-          <FieldLegend variant="label" className="mb-0 font-semibold">Irrigation</FieldLegend>
+          <FieldLegend variant="label" className="mb-0 font-semibold">{t("irrigation")}</FieldLegend>
           <FieldDescription id="irrigation-help" className="sr-only">
             How much water is available to your farm?
           </FieldDescription>
@@ -93,7 +95,7 @@ export function FarmFields() {
       <div className="grid gap-4 @sm/field-group:grid-cols-2">
         <Field>
           <div className="flex items-center gap-1">
-            <FieldLabel htmlFor="soil">Soil texture</FieldLabel>
+            <FieldLabel htmlFor="soil">{t("soilTexture")}</FieldLabel>
             <FieldHelp label="Soil texture help">
               Use the texture from your farm records or soil assessment. If unsure, ask your local agricultural office before relying on a recommendation.
             </FieldHelp>
@@ -123,7 +125,7 @@ export function FarmFields() {
         </Field>
         <Field>
           <div className="flex items-center gap-1">
-            <FieldLabel htmlFor="season">Season</FieldLabel>
+            <FieldLabel htmlFor="season">{t("season")}</FieldLabel>
             <FieldHelp label="Season help">
               Choose the growing period you are planning for. The app uses this selection to screen seasonal rainfall and temperature fit.
             </FieldHelp>
@@ -153,7 +155,7 @@ export function FarmFields() {
         </Field>
       </div>
       <FieldSet className="gap-2">
-        <FieldLegend variant="label" className="mb-0 font-semibold">What matters most?</FieldLegend>
+        <FieldLegend variant="label" className="mb-0 font-semibold">{t("priorities")}</FieldLegend>
         <FieldDescription id="priorities-help" className="sr-only">
           Choose one or more priorities.
         </FieldDescription>

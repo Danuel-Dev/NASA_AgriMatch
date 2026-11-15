@@ -12,9 +12,11 @@ import { useFarm } from "@/components/farm/farm-provider";
 import type { CropAssessment, RecommendationResult } from "@/lib/recommendation-engine";
 import { FarmConditions, FarmSnapshot } from "./farm-snapshot";
 import { RotationOption } from "./rotation-option";
+import { useLanguage } from "@/components/language-provider";
 
 export function AnalysisView() {
   const { farm } = useFarm();
+  const { t } = useLanguage();
   const [result, setResult] = useState<RecommendationResult | null>(null);
   const [error, setError] = useState("");
 
@@ -37,11 +39,11 @@ export function AnalysisView() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="space-y-2">
-          <h1 className="text-headline">Compare rotations</h1>
-          <p className="max-w-prose text-muted-foreground">Compare your three-period crop sequence with two alternatives and inspect the trade-offs behind each option.</p>
+          <h1 className="text-headline">{t("compareRotations")}</h1>
+          <p className="max-w-prose text-muted-foreground">{t("compareDescription")}</p>
         </div>
         <Link href="/#farm-workspace" className={buttonVariants({ variant: "outline" })}>
-          <ArrowLeft aria-hidden="true" />Edit your farm
+          <ArrowLeft aria-hidden="true" />{t("editFarm")}
         </Link>
       </div>
       {error ? (
@@ -50,19 +52,19 @@ export function AnalysisView() {
         </Alert>
       ) : !result ? (
         <Alert variant="default" role="status" className="py-3">
-          <LoaderCircle className="animate-spin" aria-hidden="true" /><AlertTitle>Reading your farm conditions</AlertTitle><AlertDescription>Sampling the nearest NASA climate grid and Albay soil layers.</AlertDescription>
+          <LoaderCircle className="animate-spin" aria-hidden="true" /><AlertTitle>{t("reading")}</AlertTitle><AlertDescription>{t("readingDescription")}</AlertDescription>
         </Alert>
       ) : (
         <Alert variant="warning" role="note" className="py-3">
-          <Info aria-hidden="true" /><AlertTitle>Screening estimate</AlertTitle><AlertDescription>{result.disclaimer}</AlertDescription>
+          <Info aria-hidden="true" /><AlertTitle>{t("screeningEstimate")}</AlertTitle><AlertDescription>{result.disclaimer}</AlertDescription>
         </Alert>
       )}
       <FarmSnapshot />
       {result && <div className="grid items-start gap-6 lg:grid-cols-2"><FarmConditions result={result} /><EnvironmentalPredictors result={result} /></div>}
       <section aria-labelledby="comparison-title" className="space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 id="comparison-title" className="text-title">Rotation options</h2>
-          <Badge variant="outline">{result ? "3 calculated options" : "Loading options"}</Badge>
+          <h2 id="comparison-title" className="text-title">{t("rotationOptions")}</h2>
+          <Badge variant="outline">{result ? t("calculated") : t("loadingOptions")}</Badge>
         </div>
         <div className="grid gap-6 lg:grid-cols-3 lg:gap-8">
           {(result?.rotations ?? []).map((rotation) => <RotationOption key={rotation.id} rotation={rotation} recommended={rotation.id === result?.rotations.reduce((best, option) => option.score > best.score ? option : best, result.rotations[0]).id} />)}

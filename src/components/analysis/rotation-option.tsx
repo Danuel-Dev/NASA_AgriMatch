@@ -4,8 +4,10 @@ import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import type { Rotation } from "@/lib/rotations";
+import { useLanguage } from "@/components/language-provider";
 
 export function RotationOption({ rotation, recommended = false }: { rotation: Rotation; recommended?: boolean }) {
+  const { t } = useLanguage();
   return (
     <article className={`flex h-full min-w-0 flex-col gap-4 rounded-lg border p-4 ${recommended ? "border-2 border-primary bg-accent/50 shadow-md" : "border-transparent"}`}>
       <Separator />
@@ -15,7 +17,7 @@ export function RotationOption({ rotation, recommended = false }: { rotation: Ro
             <Sprout aria-hidden="true" />
             {rotation.id.replace("option-", "Option ")}
           </Badge>
-          {recommended && <Badge variant="success">Highest screening score</Badge>}
+          {recommended && <Badge variant="success">{t("highest")}</Badge>}
         </div>
         <h3 className="text-xl font-semibold">{rotation.name}</h3>
         <p className="text-sm text-muted-foreground">
@@ -28,11 +30,11 @@ export function RotationOption({ rotation, recommended = false }: { rotation: Ro
             {rotation.score}
           </span>
           <span className="text-sm text-muted-foreground">
-            /100 screening fit score
+            {t("score")}
           </span>
         </p>
         <p className="text-sm text-muted-foreground">{rotation.summary}</p>
-        <p className="text-sm"><span className="font-medium">Trade-off: </span>{rotation.tradeoff}</p>
+        <p className="text-sm"><span className="font-medium">{t("tradeoff")} </span>{rotation.tradeoff}</p>
       </div>
       <div>
         <Link
@@ -43,7 +45,7 @@ export function RotationOption({ rotation, recommended = false }: { rotation: Ro
           })}
           aria-label={`View trade-offs for ${rotation.name}`}
         >
-          View trade-offs
+          {t("viewTradeoffs")}
           <ArrowRight aria-hidden="true" />
         </Link>
       </div>

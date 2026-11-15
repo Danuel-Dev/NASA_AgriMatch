@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
+import { useLanguage } from "@/components/language-provider";
 
 export function CompareAction({ ready, submitting, help }: {
   ready: boolean;
@@ -12,6 +13,7 @@ export function CompareAction({ ready, submitting, help }: {
 }) {
   const spaceRef = useRef<HTMLDivElement>(null);
   const actionRef = useRef<HTMLDivElement>(null);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const action = actionRef.current;
@@ -29,7 +31,7 @@ export function CompareAction({ ready, submitting, help }: {
         <div className="mx-auto max-w-xl space-y-2 lg:max-w-none">
           <Button type="submit" size="lg" disabled={!ready || submitting} aria-describedby="compare-help" className="w-full">
             {submitting ? <Spinner aria-hidden="true" /> : <ArrowRight aria-hidden="true" />}
-            {submitting ? "Opening comparison…" : "Compare demo rotations"}
+            {submitting ? t("opening") : t("compare")}
           </Button>
           <p id="compare-help" role="status" aria-live="polite" className="text-sm text-muted-foreground">{help}</p>
         </div>
