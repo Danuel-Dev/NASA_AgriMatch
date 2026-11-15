@@ -27,7 +27,8 @@ function normaliseTexture(texture: string | null) {
 function scoreSoil(sample: SoilSample, rule: CropRule) {
   const phScore = sample.ph == null ? 60 : sample.ph >= rule.soilPh.min && sample.ph <= rule.soilPh.max ? 100 : 35;
   const texture = normaliseTexture(sample.texture);
-  const textureScore = !texture ? 60 : rule.textures.includes(texture) ? 100 : 45;
+  const textureMatches = rule.textures.includes(texture) || (texture === "sand" && rule.textures.includes("sandy loam")) || (texture === "silt" && rule.textures.includes("loam"));
+  const textureScore = !texture ? 60 : textureMatches ? 100 : 45;
   return Math.round(phScore * 0.6 + textureScore * 0.4);
 }
 

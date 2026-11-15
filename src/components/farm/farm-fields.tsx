@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 
 import { Checkbox } from "@/components/ui/checkbox";
@@ -22,7 +21,7 @@ import {
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
-import { Check, HelpCircle } from "lucide-react";
+import { ArrowRight, HelpCircle } from "lucide-react";
 import {
   CROP_OPTIONS,
   CROP_LABELS_FIL,
@@ -42,34 +41,52 @@ import { useLanguage } from "@/components/language-provider";
 export function FarmFields() {
   const { farm, setFarm } = useFarm();
   const { t, language } = useLanguage();
-  const [selectedPeriod, setSelectedPeriod] = useState(0);
-  const [cropPickerOpen, setCropPickerOpen] = useState(true);
+  const selectedCrops = farm.currentRotation.filter((crop, index, crops) => crops.indexOf(crop) === index);
+
+  function chooseCrop(option: string) {
+    setFarm((current) => {
+      const rotation = current.currentRotation.filter((crop, index, crops) => crops.indexOf(crop) === index);
+      const selectedIndex = rotation.indexOf(option);
+      if (selectedIndex >= 0) return { ...current, currentRotation: rotation.filter((crop) => crop !== option) };
+      if (rotation.length >= 3) return current;
+      return { ...current, currentRotation: [...rotation, option] };
+    });
+  }
 
   return (
     <FieldGroup className="gap-4">
-        <FieldSet className="gap-2">
-          <FieldLegend variant="label" className="mb-0 font-semibold">{t("currentRotation")}</FieldLegend>
-          <FieldDescription>{t("rotationHelp")}</FieldDescription>
-          <div className="grid gap-2 sm:grid-cols-3" role="tablist" aria-label={t("currentRotation")}>
-            {farm.currentRotation.map((crop, index) => (
-              <Button key={`period-${index}`} type="button" variant="ghost" role="tab" aria-selected={selectedPeriod === index} onClick={() => { setSelectedPeriod(index); setCropPickerOpen(true); }} className={`min-h-12 justify-start border ${selectedPeriod === index ? "border-primary bg-accent text-primary" : "border-border bg-card text-foreground hover:border-primary hover:bg-accent"}`}>
-                <span className={`grid size-7 place-items-center rounded-md ${selectedPeriod === index ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>{index + 1}</span>
-                {t("growingPeriod")} {index + 1}: <span className="font-normal">{language === "fil" ? CROP_LABELS_FIL[crop] : crop}</span>
-              </Button>
-            ))}
+        <FieldSet className="gap-4">
+          <div className="flex flex-wrap items-center gap-3">
+            <FieldLegend variant="label" className="mb-0 font-semibold">{language === "fil" ? "Pumili ng 3 pananim para sa kasalukuyang rotation" : "Choose 3 crops for your current rotation"}</FieldLegend>
+            <span className="rounded-full bg-secondary px-3 py-1 text-sm font-semibold text-secondary-foreground">{selectedCrops.length} {language === "fil" ? "sa 3 napili" : "of 3 selected"}</span>
           </div>
-          {cropPickerOpen && <>
-            <div role="tabpanel" aria-label={`${t("growingPeriod")} ${selectedPeriod + 1}`} className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {CROP_OPTIONS.map((option, index) => {
-                const selected = farm.currentRotation[selectedPeriod] === option;
-                return <Button key={option} type="button" variant="ghost" aria-pressed={selected} onClick={() => setFarm((current) => ({ ...current, currentRotation: current.currentRotation.map((item, itemIndex) => itemIndex === selectedPeriod ? option : item) }))} className={`h-28 flex-col gap-2 rounded-xl border px-2 text-center ${index === CROP_OPTIONS.length - 1 ? "sm:col-start-2" : ""} ${selected ? "border-2 border-primary bg-accent text-primary" : "border-border bg-card text-muted-foreground hover:border-primary hover:bg-accent"}`}>
-                  <CropIcon crop={option} large />
-                  <span className="font-semibold">{language === "fil" ? CROP_LABELS_FIL[option] : option}</span>
-                </Button>;
+          <FieldDescription>{language === "fil" ? "I-tap ang mga pananim ayon sa karaniwang pagkakasunod ng pagtatanim. I-tap muli ang napili upang alisin ito." : "Tap crops in the order you normally plant them. Tap a selected crop to remove it."}</FieldDescription>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3" role="group" aria-label={t("currentRotation")}>
+            {CROP_OPTIONS.map((option, index) => {
+              const order = selectedCrops.indexOf(option);
+              const selected = order >= 0;
+              return <Button key={option} type="button" variant="ghost" aria-pressed={selected} onClick={() => chooseCrop(option)} className={`relative h-28 flex-col gap-2 rounded-xl border px-2 text-center ${index === CROP_OPTIONS.length - 1 ? "sm:col-start-2" : ""} ${selected ? "border-2 border-primary bg-accent text-primary" : "border-border bg-card text-muted-foreground hover:border-primary hover:bg-accent"}`}>
+                {selected && <span className="absolute right-3 top-3 grid size-7 place-items-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">{order + 1}</span>}
+                <CropIcon crop={option} large />
+                <span className="font-semibold">{language === "fil" ? CROP_LABELS_FIL[option] : option}</span>
+              </Button>;
+            })}
+          </div>
+          <div className="rounded-2xl border border-border bg-muted/60 p-4">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">{language === "fil" ? "Iyong 3-pananim na pagkakasunod" : "Your 3-crop planting order"}</p>
+            <div className="grid items-center gap-3 sm:grid-cols-[1fr_auto_1fr_auto_1fr]">
+              {[0, 1, 2].map((index) => {
+                const crop = selectedCrops[index];
+                return <span key={`order-${index}`} className="contents">
+                  <span className="flex min-h-28 flex-col items-center justify-center rounded-xl border border-primary/40 bg-card p-3 text-center">
+                    {crop ? <><CropIcon crop={crop} large /><span className="mt-2 text-xs text-muted-foreground">{language === "fil" ? `Pananim ${index + 1}` : `Crop ${index + 1}`}</span><span className="font-semibold">{language === "fil" ? CROP_LABELS_FIL[crop] : crop}</span></> : <><span className="text-2xl text-muted-foreground">—</span><span className="mt-2 text-xs text-muted-foreground">{language === "fil" ? `Pananim ${index + 1}` : `Crop ${index + 1}`}</span><span className="text-sm text-muted-foreground">{language === "fil" ? "Pumili" : "Choose"}</span></>}
+                  </span>
+                  {index < 2 && <ArrowRight className="mx-auto hidden size-5 text-primary sm:block" aria-hidden="true" />}
+                </span>;
               })}
             </div>
-            <div className="flex justify-end"><Button type="button" variant="outline" onClick={() => setCropPickerOpen(false)}><Check aria-hidden="true" />{language === "fil" ? "Tapos na" : "Done"}</Button></div>
-          </>}
+            <p className="mt-4 text-sm text-muted-foreground">{selectedCrops.length === 3 ? (language === "fil" ? "✓ Handa na ang iyong three-crop rotation!" : "✓ Your three-crop rotation is ready!") : (language === "fil" ? `Pumili pa ng ${3 - selectedCrops.length} pananim.` : `Choose ${3 - selectedCrops.length} more crop${3 - selectedCrops.length === 1 ? "" : "s"}.`)}</p>
+          </div>
         </FieldSet>
         <FieldSet className="gap-2">
           <FieldLegend variant="label" className="mb-0 font-semibold">{t("irrigation")}</FieldLegend>

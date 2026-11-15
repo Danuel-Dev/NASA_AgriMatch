@@ -6,11 +6,10 @@ import { ArrowLeft, HelpCircle, Info, LoaderCircle, TriangleAlert } from "lucide
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useFarm } from "@/components/farm/farm-provider";
 import type { CropAssessment, RecommendationResult } from "@/lib/recommendation-engine";
-import { CROP_LABELS_FIL } from "@/lib/farm";
+import { CROP_LABELS_FIL, SOIL_LABELS_FIL } from "@/lib/farm";
 import { FarmConditions, FarmSnapshot } from "./farm-snapshot";
 import { RotationOption } from "./rotation-option";
 import { useLanguage } from "@/components/language-provider";
@@ -35,13 +34,13 @@ export function AnalysisView() {
     return () => { active = false; };
   }, [farm]);
 
-  const sortedCrops = result ? [...result.crops].sort((a, b) => b.score - a.score) : [];
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="space-y-2">
-          <h1 className="text-headline">{t("compareRotations")}</h1>
-          <p className="max-w-prose text-muted-foreground">{t("compareDescription")}</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">{language === "fil" ? "Magkatabing paghahambing" : "Side-by-side"}</p>
+          <h1 className="text-headline">{language === "fil" ? "Ihambing ang iyong mga rotation" : "Compare your rotations"}</h1>
+          <p className="max-w-prose text-muted-foreground">{language === "fil" ? "Bawat landas ay may tatlong pananim na itinatanim nang magkakasunod, hindi sabay-sabay." : "Each path contains three crops planted one after another, not simultaneously."}</p>
         </div>
         <Link href="/#farm-workspace" className={buttonVariants({ variant: "outline" })}>
           <ArrowLeft aria-hidden="true" />{t("editFarm")}
@@ -70,20 +69,23 @@ export function AnalysisView() {
         <div className="grid gap-6 lg:grid-cols-3 lg:gap-8">
           {(result?.rotations ?? []).map((rotation) => <RotationOption key={rotation.id} rotation={rotation} recommended={rotation.id === result?.rotations.reduce((best, option) => option.score > best.score ? option : best, result.rotations[0]).id} />)}
         </div>
+        {result && <TradeoffTable rotations={result.rotations} />}
       </section>
-      {result ? <EnvironmentalSummary crops={sortedCrops} /> : <div className="grid gap-4 md:grid-cols-3"><Skeleton className="h-28" /><Skeleton className="h-28" /><Skeleton className="h-28" /></div>}
-      <p className="max-w-prose text-sm text-muted-foreground">{language === "fil" ? "Ang mga halaga ng klima ay mula sa pinakamalapit na NASA POWER-derived grid cell at buwanang kasaysayan ng 2015–2025. Ang halaga ng lupa ay modelo para sa itaas na 30 cm, hindi resulta ng field soil test." : "Climate values come from the nearest supplied NASA POWER grid cell and 2015–2025 monthly history. Soil values are modeled estimates for the upper 30 cm, not field soil-test results."}</p>
     </div>
   );
 }
 
-function EnvironmentalSummary({ crops }: { crops: CropAssessment[] }) {
-  return <section aria-labelledby="crop-screening-title" className="space-y-4 border-y py-5">
-    <div className="space-y-1"><h2 id="crop-screening-title" className="text-title">{useLanguage().t("cropScreening")}</h2><p className="text-sm text-muted-foreground">{useLanguage().language === "fil" ? "Makikita ang mga babala sa pana-panahong ulan sa tabi ng score ng bawat pananim." : "Seasonal rainfall warnings are shown beside each crop score."}</p></div>
-    <div className="grid gap-x-8 gap-y-3 md:grid-cols-2">
-      {crops.map((assessment) => <CropResult key={assessment.crop} assessment={assessment} />)}
-    </div>
-  </section>;
+function TradeoffTable({ rotations }: { rotations: RecommendationResult["rotations"] }) {
+  const { language } = useLanguage();
+  const isFil = language === "fil";
+  const columns = rotations.slice(0, 3);
+  const rows = [
+    { label: isFil ? "💧 Tubig" : "💧 Water", values: columns.map((rotation) => rotation.priorityMetrics.find((metric) => metric.label === "Water fit")?.value && (rotation.priorityMetrics.find((metric) => metric.label === "Water fit")!.value >= 85 ? (isFil ? "Mas mababa" : "Potentially lower") : (isFil ? "Suriin ang yugto" : "Check crop stage"))) },
+    { label: isFil ? "🌱 Lupa" : "🌱 Soil", values: columns.map((rotation) => rotation.priorityMetrics.find((metric) => metric.label === "Soil health")?.value && (rotation.priorityMetrics.find((metric) => metric.label === "Soil health")!.value >= 80 ? (isFil ? "Potensyal ng legume" : "Legume potential") : (isFil ? "Batayan ng kasalukuyan" : "Current baseline"))) },
+    { label: isFil ? "👩‍🌾 Pagsisikap sa bukid" : "👩‍🌾 Farm effort", values: columns.map((rotation, index) => index === 0 ? (isFil ? "Pamilyar na gawain" : "Familiar routine") : (isFil ? "Bagong pananim na aaralin" : "New crop to learn")) },
+    { label: isFil ? "🔄 Ano ang nagbabago" : "🔄 What changes", values: columns.map((_, index) => index === 0 ? (isFil ? "Walang pagbabago" : "No change") : index === 1 ? (isFil ? "Bagong halo" : "New mix") : (isFil ? "Binagong pagkakasunod" : "Reordered crops")) },
+  ];
+  return <section aria-labelledby="tradeoff-table-title" className="mt-8 rounded-3xl border bg-card p-5 sm:p-8"><div className="space-y-2"><h2 id="tradeoff-table-title" className="text-title">⚖️ {isFil ? "Aling mga kapalit ang mahalaga sa iyo?" : "Which trade-offs matter to you?"}</h2><p className="text-muted-foreground">{isFil ? "Nag-aalok ang bawat opsyon ng ibang benepisyo at limitasyon. Ihambing ang mga ito bago pumili ng plano sa pagtatanim." : "Each option offers different benefits and compromises. Compare them before choosing a planting plan."}</p></div><div className="mt-6 overflow-x-auto"><div className="min-w-[720px] space-y-3"><div className="grid grid-cols-[12rem_repeat(3,minmax(0,1fr))] gap-px overflow-hidden rounded-2xl bg-border text-sm font-semibold"><div className="bg-secondary p-4">{isFil ? "Ihambing" : "Compare"}</div>{columns.map((rotation, index) => <div key={rotation.id} className="bg-secondary p-4">{index === 0 ? (isFil ? "Iyong kasalukuyang plano" : "Your current plan") : index === 1 ? "Alternative A" : "Alternative B"}</div>)}</div>{rows.map((row) => <div key={row.label} className="grid grid-cols-[12rem_repeat(3,minmax(0,1fr))] gap-px overflow-hidden rounded-2xl bg-border text-sm"><div className="bg-muted p-4 font-semibold text-foreground">{row.label}</div>{row.values.map((value, index) => <div key={`${row.label}-${index}`} className="bg-card p-4 text-muted-foreground">{value}</div>)}</div>)}</div></div><p className="mt-5 text-sm text-muted-foreground">{isFil ? "Mga halimbawang tendensya lamang ito. Hindi ito beripikadong pagtitipid sa tubig, pagbabago sa ani, o pagbuti ng lupa." : "Illustrative tendencies only. These are not verified water savings, yield changes, or soil improvements."}</p></section>;
 }
 
 function EnvironmentalPredictors({ result }: { result: RecommendationResult }) {
@@ -112,9 +114,9 @@ function EnvironmentalPredictors({ result }: { result: RecommendationResult }) {
       <p className="text-sm text-muted-foreground">{isFil ? "Mga halaga ng klima at lupa na ginamit ng makina ng rekomendasyon." : "The climate and soil values used by the recommendation engine."}</p>
     </div>
     <div className="grid gap-3 md:grid-cols-3">
-      <Metric label="Estimated annual rainfall" value={`${Math.round(result.climate.rainfall.rainfallTotal)} mm`} detail="12-month NASA POWER average" />
-      <Metric label="Mean temperature" value={`${result.climate.temperature.mean.toFixed(1)}°C`} detail="Annual monthly average" />
-      <Metric label="Estimated soil" value={result.soil.texture ?? "No estimate"} detail={result.soil.ph == null ? "No modeled value at this exact pin" : `pH ${result.soil.ph.toFixed(1)} · modeled`} />
+      <Metric label={isFil ? "Tinatayang taunang ulan" : "Estimated annual rainfall"} value={`${Math.round(result.climate.rainfall.rainfallTotal)} mm`} detail={isFil ? "12-buwang average mula sa NASA POWER" : "12-month NASA POWER average"} />
+      <Metric label={isFil ? "Katamtamang temperatura" : "Mean temperature"} value={`${result.climate.temperature.mean.toFixed(1)}°C`} detail={isFil ? "Taunang average ng mga buwan" : "Annual monthly average"} />
+      <Metric label={isFil ? "Tinatayang lupa" : "Estimated soil"} value={result.soil.texture ? (isFil ? (SOIL_LABELS_FIL[result.soil.texture] ?? result.soil.texture) : result.soil.texture) : (isFil ? "Walang pagtatantiya" : "No estimate")} detail={result.soil.ph == null ? (isFil ? "Walang modelong halaga sa eksaktong pin na ito" : "No modeled value at this exact pin") : `pH ${result.soil.ph.toFixed(1)} · ${isFil ? "modelo" : "modeled"}`} />
     </div>
     {result.soil.ph == null && <Alert variant="warning" role="note" className="py-3"><Info aria-hidden="true" /><AlertTitle>Soil estimate unavailable at the exact pin</AlertTitle><AlertDescription>The supplied soil raster marks this pixel as NoData. Climate-based scores are still available; soil fit is treated as unknown rather than guessed.</AlertDescription></Alert>}
   </section>;
@@ -124,7 +126,7 @@ function Metric({ label, value, detail }: { label: string; value: string; detail
   return <div className="rounded-lg border bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><p className="mt-1 text-xl font-semibold capitalize">{value}</p><p className="mt-1 text-xs text-muted-foreground">{detail}</p></div>;
 }
 
-function CropResult({ assessment }: { assessment: CropAssessment }) {
+export function CropResult({ assessment }: { assessment: CropAssessment }) {
   const { language } = useLanguage();
   const isFil = language === "fil";
   const cropName = isFil ? (CROP_LABELS_FIL[assessment.crop] ?? assessment.crop) : assessment.crop;

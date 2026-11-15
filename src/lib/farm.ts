@@ -10,7 +10,7 @@ export const CROP_OPTIONS = [
   "Eggplant", "Yardlong bean", "Peanut",
 ];
 export const IRRIGATION_OPTIONS = ["Adequate", "Limited"];
-export const SOIL_OPTIONS = ["Clay loam", "Sandy loam", "Clay", "Loam"];
+export const SOIL_OPTIONS = ["Sand", "Silt", "Clay"];
 export const SEASON_OPTIONS = ["Dry season", "Wet season", "Transition season"];
 export const PRIORITY_OPTIONS = [
   "Conserve water",
@@ -32,7 +32,7 @@ export const CROP_LABELS_FIL: Record<string, string> = {
 };
 
 export const IRRIGATION_LABELS_FIL: Record<string, string> = { Adequate: "Sapat", Limited: "Limitado" };
-export const SOIL_LABELS_FIL: Record<string, string> = { "Clay loam": "Lupang luwad na loam", "Sandy loam": "Loam na mabuhangin", Clay: "Luwad", Loam: "Loam" };
+export const SOIL_LABELS_FIL: Record<string, string> = { Sand: "Buhangin", Silt: "Banlik", Clay: "Luwad" };
 export const SEASON_LABELS_FIL: Record<string, string> = { "Wet season": "Tag-ulan", "Dry season": "Tag-init", "Transition season": "Panahon ng paglipat" };
 export const PRIORITY_LABELS_FIL: Record<string, string> = {
   "Conserve water": "Magtipid ng tubig",
@@ -56,9 +56,9 @@ export type FarmDraft = {
 export const INITIAL_FARM: FarmDraft = {
   point: null,
   locationName: "Albay, Philippines",
-  currentRotation: ["Rice", "Rice", "Rice"],
+  currentRotation: ["Rice", "Peanut", "Yardlong bean"],
   irrigation: "Adequate",
-  soil: "Clay loam",
+  soil: "Clay",
   season: "Dry season",
   priorities: ["Conserve water"],
 };
