@@ -5,7 +5,7 @@ Farm planning and climate-resilient crop-rotation comparisons for the Albay pilo
 ## Development
 
 ```sh
-npm ci
+npm install
 npm run dev
 ```
 
