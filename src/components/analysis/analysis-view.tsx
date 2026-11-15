@@ -59,8 +59,13 @@ export function AnalysisView() {
           <Info aria-hidden="true" /><AlertTitle>{t("screeningEstimate")}</AlertTitle><AlertDescription>{result.disclaimer}</AlertDescription>
         </Alert>
       )}
-      <FarmSnapshot />
-      {result && <div className="grid items-start gap-6 lg:grid-cols-2"><FarmConditions result={result} /><EnvironmentalPredictors result={result} /></div>}
+      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
+        <FarmSnapshot />
+        <div className="space-y-6">
+          {result && <FarmConditions result={result} />}
+          {result && <EnvironmentalPredictors result={result} />}
+        </div>
+      </div>
       <section aria-labelledby="comparison-title" className="space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 id="comparison-title" className="text-title">{t("rotationOptions")}</h2>
@@ -92,10 +97,10 @@ function EnvironmentalPredictors({ result }: { result: RecommendationResult }) {
   const { language } = useLanguage();
   const isFil = language === "fil";
   const [showHelp, setShowHelp] = useState(false);
-  return <section aria-labelledby="environment-title" className="space-y-4 border-y py-5">
+  return <section aria-labelledby="environment-title" className="space-y-2 border-y py-3">
     <div className="space-y-1">
       <div className="flex items-center gap-2">
-        <h2 id="environment-title" className="text-title">{isFil ? "Mga salik sa kapaligiran" : "Environmental predictors"}</h2>
+        <h2 id="environment-title" className="text-lg font-semibold">{isFil ? "Mga salik sa kapaligiran" : "Environmental predictors"}</h2>
         <span className="group relative inline-flex">
           <button
             type="button"
@@ -113,7 +118,7 @@ function EnvironmentalPredictors({ result }: { result: RecommendationResult }) {
       </div>
       <p className="text-sm text-muted-foreground">{isFil ? "Mga halaga ng klima at lupa na ginamit ng makina ng rekomendasyon." : "The climate and soil values used by the recommendation engine."}</p>
     </div>
-    <div className="grid gap-3 md:grid-cols-3">
+    <div className="grid gap-2 md:grid-cols-3">
       <Metric label={isFil ? "Tinatayang taunang ulan" : "Estimated annual rainfall"} value={`${Math.round(result.climate.rainfall.rainfallTotal)} mm`} detail={isFil ? "12-buwang average mula sa NASA POWER" : "12-month NASA POWER average"} />
       <Metric label={isFil ? "Katamtamang temperatura" : "Mean temperature"} value={`${result.climate.temperature.mean.toFixed(1)}°C`} detail={isFil ? "Taunang average ng mga buwan" : "Annual monthly average"} />
       <Metric label={isFil ? "Tinatayang lupa" : "Estimated soil"} value={result.soil.texture ? (isFil ? (SOIL_LABELS_FIL[result.soil.texture] ?? result.soil.texture) : result.soil.texture) : (isFil ? "Walang pagtatantiya" : "No estimate")} detail={result.soil.ph == null ? (isFil ? "Walang modelong halaga sa eksaktong pin na ito" : "No modeled value at this exact pin") : `pH ${result.soil.ph.toFixed(1)} · ${isFil ? "modelo" : "modeled"}`} />
@@ -123,7 +128,7 @@ function EnvironmentalPredictors({ result }: { result: RecommendationResult }) {
 }
 
 function Metric({ label, value, detail }: { label: string; value: string; detail: string }) {
-  return <div className="rounded-lg border bg-card p-4"><p className="text-sm text-muted-foreground">{label}</p><p className="mt-1 text-xl font-semibold capitalize">{value}</p><p className="mt-1 text-xs text-muted-foreground">{detail}</p></div>;
+  return <div className="rounded-lg border bg-card p-3"><p className="text-xs text-muted-foreground">{label}</p><p className="mt-1 text-lg font-semibold">{value}</p><p className="mt-1 text-[11px] leading-tight text-muted-foreground">{detail}</p></div>;
 }
 
 export function CropResult({ assessment }: { assessment: CropAssessment }) {

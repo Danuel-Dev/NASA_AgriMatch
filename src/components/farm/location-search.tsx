@@ -3,7 +3,7 @@
 import { useRef, useState, type FormEvent } from "react";
 import { Search, TriangleAlert } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from "@/components/ui/combobox";
+import { Button } from "@/components/ui/button";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "@/components/ui/input-group";
 import { Spinner } from "@/components/ui/spinner";
@@ -15,10 +15,7 @@ export function LocationSearch({ onSelect }: { onSelect: (point: FarmPoint, name
   const { language } = useLanguage();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<LocationResult[]>([]);
-  const [selected, setSelected] = useState<LocationResult | null>(null);
   const [searching, setSearching] = useState(false);
-  const [searched, setSearched] = useState(false);
-  const [open, setOpen] = useState(false);
   const [error, setError] = useState("");
   const requestRef = useRef<AbortController | null>(null);
 
@@ -29,29 +26,25 @@ export function LocationSearch({ onSelect }: { onSelect: (point: FarmPoint, name
     requestRef.current?.abort();
     const request = new AbortController();
     requestRef.current = request;
-    setSearching(true); setSearched(false); setError(""); setResults([]); setOpen(false);
+    setSearching(true); setError(""); setResults([]);
     try {
       const matches = await searchLocations(trimmed, request.signal);
       if (request.signal.aborted) return;
-      setResults(matches); setSearched(true); setOpen(matches.length > 0);
+      setResults(matches);
     } catch (cause) {
       if (request.signal.aborted) return;
       setError(cause instanceof Error ? cause.message : "Location search failed. Try again.");
     } finally { if (!request.signal.aborted) setSearching(false); }
   }
 
-  return <div className="grid min-w-0 gap-3 sm:grid-cols-2">
-    <Field>
-      <FieldLabel htmlFor="location-results">{language === "fil" ? "Pumili ng lokasyon ng bukid" : "Choose farm location"}</FieldLabel>
-      <Combobox<LocationResult> modal={false} items={results} filter={null} value={selected} inputValue={selected?.label ?? ""} open={open} onOpenChange={setOpen} itemToStringLabel={(item) => item.label} isItemEqualToValue={(item, value) => item.id === value.id} onValueChange={(value) => { setSelected(value); if (value) { onSelect(value.point, value.label); setOpen(false); } }}>
-        <ComboboxInput id="location-results" readOnly placeholder={language === "fil" ? "Pumili ng lugar" : "Choose a place"} className="w-full" />
-        <ComboboxContent><ComboboxEmpty>{searching ? (language === "fil" ? "Hinahanap sa Albay..." : "Searching Albay...") : searched ? (language === "fil" ? "Walang nahanap. Subukan ang ibang pangalan." : "No places found. Try another name.") : (language === "fil" ? "Maghanap ng lugar upang makita ang mga mungkahi." : "Search for a place to see suggestions.")}</ComboboxEmpty><ComboboxList>{(result: LocationResult) => <ComboboxItem key={result.id} value={result}><div className="min-w-0 space-y-1"><p className="font-semibold">{result.label}</p><p className="text-sm text-muted-foreground">{result.description}</p></div></ComboboxItem>}</ComboboxList></ComboboxContent>
-      </Combobox>
-    </Field>
-    <Field>
-      <FieldLabel htmlFor="location-search">{language === "fil" ? "Maghanap sa Albay" : "Search in Albay"}</FieldLabel>
-      <form onSubmit={handleSearch}><InputGroup><InputGroupInput id="location-search" type="search" placeholder={language === "fil" ? "Maghanap ng lugar" : "Search for a place"} value={query} onChange={(event) => setQuery(event.target.value)} aria-busy={searching} /><InputGroupAddon align="inline-end"><InputGroupButton type="submit" size="icon-sm" aria-label={language === "fil" ? "Maghanap" : "Search"} disabled={!query.trim() || searching}>{searching ? <Spinner aria-hidden="true" /> : <Search aria-hidden="true" />}</InputGroupButton></InputGroupAddon></InputGroup></form>
-    </Field>
-    {error && <Alert variant="destructive" className="sm:col-span-2"><TriangleAlert aria-hidden="true" /><AlertTitle>{language === "fil" ? "Hindi available ang paghahanap ng lokasyon" : "Location search unavailable"}</AlertTitle><AlertDescription>{error}</AlertDescription></Alert>}
+  return <div className="grid min-w-0 gap-3">
+    <div className="relative z-30">
+      <Field>
+        <FieldLabel htmlFor="location-search">{language === "fil" ? "Maghanap sa Albay" : "Search in Albay"}</FieldLabel>
+        <form onSubmit={handleSearch}><InputGroup><InputGroupInput id="location-search" type="search" placeholder={language === "fil" ? "Maghanap ng lugar" : "Search for a place"} value={query} onChange={(event) => setQuery(event.target.value)} aria-busy={searching} /><InputGroupAddon align="inline-end"><InputGroupButton type="submit" size="icon-sm" aria-label={language === "fil" ? "Maghanap" : "Search"} disabled={!query.trim() || searching}>{searching ? <Spinner aria-hidden="true" /> : <Search aria-hidden="true" />}</InputGroupButton></InputGroupAddon></InputGroup></form>
+      </Field>
+      {results.length > 0 && <div className="absolute left-0 right-0 top-full mt-1 overflow-hidden rounded-lg border bg-popover shadow-md" role="listbox" aria-label={language === "fil" ? "Mga mungkahing lugar" : "Suggested places"}>{results.map((result) => <Button key={result.id} type="button" variant="ghost" className="h-auto min-h-12 w-full justify-start rounded-none px-3 py-2 text-left hover:bg-accent" onClick={() => { onSelect(result.point, result.label); setResults([]); }}><span className="min-w-0 space-y-1"><span className="block font-semibold">{result.label}</span><span className="block text-sm font-normal text-muted-foreground">{result.description}</span></span></Button>)}</div>}
+    </div>
+    {error && <Alert variant="destructive"><TriangleAlert aria-hidden="true" /><AlertTitle>{language === "fil" ? "Hindi available ang paghahanap ng lokasyon" : "Location search unavailable"}</AlertTitle><AlertDescription>{error}</AlertDescription></Alert>}
   </div>;
 }
